@@ -16,12 +16,4 @@ html{
     height: 100%;
 
 }
-app-card{
-    position: absolute;
-}
-.t{
-    position: absolute;
-    max-height: inherit;
-    box-sizing:border-box;
-}
 

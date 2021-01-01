@@ -1,0 +1,13 @@
+#cards{
+    display: inline-flex;
+    position: absolute;
+    background-color: DodgerBlue;
+    
+    width: 15%;
+
+    justify-content: flex-start
+}
+#cards app-card{
+    display:inline-block;
+
+}

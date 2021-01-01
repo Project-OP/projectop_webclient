@@ -1,16 +1,15 @@
 
-
+:host{
+    background-color: red;  
+}
 .centerhv {
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
 }
 #table{
-    width: 40%;      
+    width: 40%; 
+       
 }
 
 
-app-card{
-    display: block;
-    width:10%;
-}

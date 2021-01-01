@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-seat',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SeatComponent implements OnInit {
 
-  constructor() { }
+  cards: CardComponent[];
+
+  constructor() {
+    this.cards = new Array<CardComponent>();
+    this.cards.push(new CardComponent());
+    this.cards.push(new CardComponent());
+   }
 
   ngOnInit(): void {
   }
