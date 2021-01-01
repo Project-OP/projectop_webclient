@@ -9,7 +9,19 @@
 }
 #table{
     width: 40%; 
-       
-}
+    z-index: 10000;
 
+}
+app-seat{
+    position: absolute;
+    
+    
+    width:100%;
+}
+app-seat:nth-child(1){
+    position: absolute;
+    top:70%;
+    left:40%;
+    width:100%;
+}
 
