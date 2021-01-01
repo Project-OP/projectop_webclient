@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-communitycards',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommunitycardsComponent implements OnInit {
 
-  constructor() { }
+  cards: CardComponent[];
+
+  constructor() {
+    this.cards = new Array<CardComponent>();
+    for (let i = 0; i < 5; i++){
+      this.cards.push(new CardComponent());
+    }
+  
+   }
 
   ngOnInit(): void {
   }

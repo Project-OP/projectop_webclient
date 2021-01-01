@@ -1,0 +1,14 @@
+#cards{
+    display: inline-flex;
+    position: absolute;
+    
+    width: 320px;
+    
+    justify-content: flex-start;
+    left: 135px;
+    top:110px;
+}
+#cards app-card{
+    display:inline-block;
+    margin-left: 3px;
+}
