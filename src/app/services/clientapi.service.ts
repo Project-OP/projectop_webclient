@@ -11,8 +11,8 @@ export class ClientapiService {
    }
 
   public async Test(){
-    const e = await this.http.get("/game/new/phil").toPromise();
-    console.log(e);
+    //const e = await this.http.get("/game/new/phil").toPromise();
+    //console.log(e);
     console.log("IT WORKS");
     return "it works";
   }

@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files .*/
+*{
+    margin: 0;
+    padding: 0;
+}
+.table_background{
+    background: rgb(2,0,36);
+    
+    background: radial-gradient(rgba(2,0,36,1) 0%, rgba(20,20,94,1) 91%, rgba(15,15,92,1) 100%);
+    background-repeat: repeat;
+    width: 100%;
+    height: 100%;
+}
+html{
+    width: 100%;
+    height: 100%;
+
+}
+app-card{
+    position: absolute;
+}
+.t{
+    position: absolute;
+    max-height: inherit;
+    box-sizing:border-box;
+}
+
