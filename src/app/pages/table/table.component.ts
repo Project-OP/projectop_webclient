@@ -17,6 +17,9 @@ export class TableComponent implements OnInit {
   @ViewChildren('seats') 
   seats_elem: QueryList<SeatComponent>;
 
+  @ViewChild('table') 
+  table: ElementRef;
+
   seats: Array<Player_Client>;
   room: Room_Client;
   constructor(
@@ -43,10 +46,14 @@ export class TableComponent implements OnInit {
   ngAfterViewInit(){
     this.document.body.classList.add('table_background');
     console.log(this.seats_elem.toArray());
-
+    const table_dom = this.table.nativeElement;
+    console.log(table_dom.offsetWidth, table_dom.offsetHeight );
+     
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: string) {
+    const table_dom = this.table.nativeElement;
+    console.log(table_dom.offsetWidth, table_dom.offsetHeight );
   }
 }

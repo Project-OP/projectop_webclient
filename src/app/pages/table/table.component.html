@@ -1,9 +1,10 @@
-<div id="area" >
-    <img id="table" #table alt="table" class="centerhv t" src="/assets/img/table.png" />
-</div>
 
-<div id="seats" #seats *ngFor="let x of seats" >
-    <app-seat></app-seat>
+<div id="area" class="centerhv" >
+    <img id="table" #table alt="table"  src="/assets/img/table.png" />
+    <div id="seats">
+        <app-seat #seats *ngFor="let x of seats" ></app-seat>
+    </div>
+    
 </div>
 
 

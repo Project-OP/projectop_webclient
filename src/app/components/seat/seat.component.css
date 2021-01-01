@@ -1,15 +1,14 @@
 #cards{
     display: inline-flex;
     position: absolute;
-    background-color: DodgerBlue;
     
-    width: 10%;
-    min-width: 120px;
+    width: 120px;
+    
     justify-content: flex-start
 }
 #cards app-card{
     display:inline-block;
-
+    margin-left: 1px;
 }
 
 /*

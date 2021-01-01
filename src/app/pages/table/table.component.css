@@ -5,21 +5,66 @@
 .centerhv {
     margin: auto;
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    display: inline-block;
+    overflow: visible;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
     
 }
 #table{
-    height: 40%; 
-    
-    z-index: 10000;
+    width: 600px;
+}
+#area{
+    display: inline-block;
 
 }
 app-seat{
     position: absolute;
-    
-    
     width:100%;
+    
+
 }
 
 
 
+
+app-seat:nth-child(1){
+    left:230px;
+    top:320px;
+    
+}
+app-seat:nth-child(2){
+    left:30px;
+    top:320px;
+}
+app-seat:nth-child(3){
+    left:-140px;
+    top:120px;
+
+}
+
+app-seat:nth-child(4){
+    left:30px;
+    top:-150px;
+}
+
+app-seat:nth-child(5){
+    left:230px;
+    top:-150px;
+}
+app-seat:nth-child(6){
+    left:430px;
+    top:-150px;
+}
+
+app-seat:nth-child(7){
+    left:630px;
+    top:120px;
+}
+
+app-seat:nth-child(8){
+    left:430px;
+    top:320px;
+}

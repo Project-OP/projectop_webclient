@@ -10,6 +10,7 @@ import { CardComponent } from './components/card/card.component';
 import { TurnactionsComponent } from './components/turnactions/turnactions.component';
 import { MessagewindowComponent } from './components/messagewindow/messagewindow.component';
 import { AdminwindowComponent } from './components/adminwindow/adminwindow.component';
+import { CommunitycardsComponent } from './components/communitycards/communitycards.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AdminwindowComponent } from './components/adminwindow/adminwindow.compo
     CardComponent,
     TurnactionsComponent,
     MessagewindowComponent,
-    AdminwindowComponent
+    AdminwindowComponent,
+    CommunitycardsComponent
   ],
   imports: [
     BrowserModule,
