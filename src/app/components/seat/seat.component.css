@@ -50,19 +50,33 @@
   background-color: rgba(0, 255, 0, 0.41);
   
 }
-#sitheresitout{
+.sitheresitout{
   display: block;
   position: absolute;
   top: 50px;
-  left: 0px;
+  left: 30px;
   right: 0px;
   width: 100%;
   bottom: 50px;
   z-index: 100000;
   font-size: 30px;
   border-radius: 150px;
-
+  background-color: black;
+  width: 100px;
+  height: 100px;
+  color: white;
+  border: 1px solid black;
 }
+
+.sitheresitout:hover{
+  background-color: rgb(65, 0, 0);
+}
+.sitheresitout:active{
+  background-color: rgb(143, 0, 0);
+  position: relative;
+  top: 1;
+}
+
 /*
 
 // Container and displays

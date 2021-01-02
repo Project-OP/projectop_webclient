@@ -1,5 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ClientError} from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';
 import { New_Room_Resp } from 'src/pots/client_data/New_Room_Resp';
@@ -10,10 +11,17 @@ import { Room_Client } from 'src/pots/client_data/Room_Client';
 })
 export class ClientapiService {
 
+  room: Room_Client;
+
+  OnRoomData = new EventEmitter<string>();
+  OnApiError = new EventEmitter<ClientError>();
+
+
   constructor(private http: HttpClient) {
 
    }
 
+  
   public async NewGame(name: string): Promise<New_Room_Resp |ClientError >{
     try{
      const e = await this.http.get<New_Room_Resp>("/game/new/"+name, {responseType:'json'}).toPromise();     
@@ -27,6 +35,19 @@ export class ClientapiService {
   public async Join(name: string, roomid: string): Promise<Room_Client |ClientError>{
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+roomid+"/join/"+name, {responseType:'json'}).toPromise();
+      this.room = e;
+
+      return e;
+    }catch(er){
+      return this.toJsonError(er);
+    }
+  }
+
+  public async StartGame(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>("/game/id/"+this.room.id+"/startgame", {responseType:'json'}).toPromise();
+      this.room = e;
+
       return e;
     }catch(er){
       return this.toJsonError(er);
@@ -36,6 +57,7 @@ export class ClientapiService {
   public async GetMyRoom(): Promise<MyRoom |ClientError>{
     try{
       const e = await this.http.get<MyRoom>("/game/myroom/", {responseType:'json'}).toPromise();
+
       return e;
     }catch(er){
       return this.toJsonError(er);
@@ -43,9 +65,44 @@ export class ClientapiService {
   }
 
 
+
+  public async Sit(pos: number): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/sit/${pos}`, {responseType:'json'}).toPromise();
+      this.room = e;
+      
+      this.OnRoomData.emit("sit");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+      
+    }
+  }
+
+  
+  public async Leave(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/leave`, {responseType:'json'}).toPromise();
+      this.room = e;
+      
+      this.OnRoomData.emit("leave");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+      
+    }
+  }
+  
+
   public async Enter(roomid: string): Promise<Room_Client |ClientError>{
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+roomid, {responseType:'json'}).toPromise();
+      this.room = e;
+
       return e;
     }catch(er){
       return this.toJsonError(er);

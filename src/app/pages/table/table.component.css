@@ -85,3 +85,11 @@ app-turnactions{
     bottom: 20px;
     left: 20px;
 }
+
+
+app-menu{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    
+}

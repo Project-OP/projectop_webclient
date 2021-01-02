@@ -16,6 +16,7 @@ import { DealerbuttonComponent } from './components/dealerbutton/dealerbutton.co
 import { LobbyComponent } from './pages/lobby/lobby.component';
 import { MsgdialogComponent } from './components/msgdialog/msgdialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MenuComponent } from './components/menu/menu.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PotbetinfoComponent,
     DealerbuttonComponent,
     LobbyComponent,
-    MsgdialogComponent
+    MsgdialogComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
