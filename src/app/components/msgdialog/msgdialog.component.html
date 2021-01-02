@@ -1,1 +1,6 @@
-<p>msgdialog works!</p>
+<div *ngIf="visible" id="msgbox">
+
+    <div id="head">{{head}}</div>
+    <div id="body">{{msg}}</div>
+    <button (click)="ok()">ok</button>
+</div>

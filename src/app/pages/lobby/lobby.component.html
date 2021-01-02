@@ -1,9 +1,31 @@
+<app-msgdialog #msgbox></app-msgdialog>
 <form [formGroup]="form" id="content" (ngSubmit)="submit()">
     <h1>Lobby</h1>
     <div id="">
         <label class="block">Name</label>
         
-        <input formControlName="name" id="nameinput" type="text" formControlName="name">
+        <input 
+            placeholder="Your name"
+            formControlName="name" 
+            required 
+            minlength="2"
+            id="nameinput" 
+            type="text" 
+            
+            
+        >
+        <div *ngIf="name?.invalid && (name?.dirty || !name?.touched)"
+            class="required_info">
+            <div *ngIf="name?.errors?.required">
+            Name is required.
+            </div>
+            <div *ngIf="name?.errors?.minlength">
+            Name must be at least 2 characters long.
+            </div>
+            <div *ngIf="name?.errors?.pattern"> 
+                Invalid characters
+            </div>
+        </div>
         
         <div id="radiogroup">
         <input formControlName="newjoin" id="new_rd" name="newjoin" type="radio" value="new">
