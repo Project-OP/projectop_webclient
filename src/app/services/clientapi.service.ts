@@ -1,6 +1,7 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ClientError} from 'src/pots/client_data/ClientError';
+import { MyRoom } from 'src/pots/client_data/MyRoom';
 import { New_Room_Resp } from 'src/pots/client_data/New_Room_Resp';
 import { Room_Client } from 'src/pots/client_data/Room_Client';
 
@@ -31,6 +32,16 @@ export class ClientapiService {
       return this.toJsonError(er);
     }
   }
+
+  public async GetMyRoom(): Promise<MyRoom |ClientError>{
+    try{
+      const e = await this.http.get<MyRoom>("/game/myroom/", {responseType:'json'}).toPromise();
+      return e;
+    }catch(er){
+      return this.toJsonError(er);
+    }
+  }
+
 
   public async Enter(roomid: string): Promise<Room_Client |ClientError>{
     try{

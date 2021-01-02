@@ -59,7 +59,6 @@ export class LobbyComponent implements OnInit {
 
  async submit(){
 
-    console.log(this.msgbox);
     if (this.form.invalid){
       return;
     }

@@ -6,7 +6,8 @@ import { TableComponent } from './pages/table/table.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/lobby', pathMatch: 'full' }, 
-  { path: 'table/:roomid', component: TableComponent },
+  { path: 'table/:roomid?', component: TableComponent },
+  { path: 'table', component: TableComponent },
   { path: 'lobby', component: LobbyComponent },
 ];
 
