@@ -35,6 +35,15 @@ export class TableComponent implements OnInit {
       this.seats = seats_init;
       this.seats_elem = new QueryList<SeatComponent>();
       this.room = new Room_Client();
+
+      this.seats_elem.forEach((v, i)=>{
+        v.index = i;
+        const c = new Player_Client();
+        c.Name = "Player "+i;
+        v.player = c;
+        
+      });
+
     }
     
 

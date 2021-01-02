@@ -1,0 +1,44 @@
+img{
+    position: absolute;
+    width: 15px;
+    left:0px;
+    top: 0px;
+}
+
+img:nth-child(1){
+    left: 330px;
+    top:  260px;
+}
+
+img:nth-child(2){
+    left: 150px;
+    top:  260px;
+}
+
+img:nth-child(8){
+    left: 465px;
+    top:  260px;
+}
+
+img:nth-child(4){
+    left: 150px;
+    top:  40px;
+}
+
+img:nth-child(5){
+    left: 330px;
+    top:  40px;
+}
+img:nth-child(6){
+    left: 465px;
+    top:  40px;
+}
+
+img:nth-child(3){
+    left: 37px;
+    top:  130px;
+}
+img:nth-child(7){
+    left: 547px;
+    top:  130px;
+}

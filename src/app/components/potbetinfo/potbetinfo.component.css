@@ -1,0 +1,82 @@
+.bet{
+    position: absolute;
+
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;;
+    font-size: 18px;
+    
+    text-align: left;
+
+    display: inline-block;
+    width: 100px;
+    
+}
+
+#pot{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;;
+    font-size: 22px;
+    position: absolute;
+    font-weight: bold;
+    left: 250px;
+    top: 240px;
+    display: inline-block;
+    width: 200px;
+    
+}
+
+.bet:nth-child(1){
+    left:240px;
+    top:280px;
+    text-align: center;
+
+    
+}
+.bet:nth-child(2){
+    left:120px;
+    top:280px;
+}
+.bet:nth-child(3){
+    left:5px;
+    top:150px;
+    width: 30px;
+    font-size: 15px;
+    text-align: center;
+
+}
+
+.bet:nth-child(4){
+    left:120px;
+    top: 10px;
+}
+
+.bet:nth-child(5){
+    left:240px;
+    top: 10px;
+    text-align: center;
+}
+.bet:nth-child(6){
+    left:430px;
+    top: 10px;
+    width: 80px;
+    text-align: center;
+}
+
+.bet:nth-child(7){
+    left:565px;
+    top:120px;
+
+    text-align: center;
+    top:150px;
+    width: 30px;
+    font-size: 15px;
+}
+
+.bet:nth-child(8){
+    left:430px;
+    top:280px;
+    width: 80px;
+    text-align: center;
+
+}

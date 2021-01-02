@@ -1,16 +1,68 @@
+
+*:focus{
+  outline: none;
+}
 #cards{
     display: inline-flex;
-    position: absolute;
     
-    width: 120px;
+    width: 150px;
     
     justify-content: flex-start
 }
 #cards app-card{
     display:inline-block;
-    margin-left: 1px;
+    margin-left: 0px;
+}
+.infolabel{
+  display: block;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  width: 150px;
+  text-align: center;
+  background-color: black;
+  border: 1px solid;
+  border-radius: 4px;
+
 }
 
+#name{
+
+
+
+}
+#amount{
+
+
+
+}
+#outer{
+  
+  padding: 5px;
+  border-radius: 10px;
+}
+
+#outer.turn{
+  background-color: rgba(255, 0, 0, 0.41);
+  
+}
+#outer.winner{
+  background-color: rgba(0, 255, 0, 0.41);
+  
+}
+#sitheresitout{
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  bottom: 50px;
+  z-index: 100000;
+  font-size: 30px;
+  border-radius: 150px;
+
+}
 /*
 
 // Container and displays

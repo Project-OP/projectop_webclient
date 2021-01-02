@@ -1,0 +1,18 @@
+#turnactions *{
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+td{
+    padding-right: 30px;
+}
+
+#head{
+    font-weight: bold;
+
+}
+
+#head td{
+    padding-bottom: 10px;
+
+}

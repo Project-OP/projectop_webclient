@@ -1,3 +1,9 @@
-<div id="cards">
-    <app-card *ngFor="let c of cards"></app-card>
+<div id="outer">
+    <button *ngIf="sithere != ''" id="sitheresitout">{{sithere}}</button>
+    <div id="cards">
+        <app-card *ngFor="let c of cards"></app-card>
+    </div>
+    <div  class="infolabel" id="name">{{name}}</div>
+    <div class="infolabel"  id="amount">{{balance}}</div>
+    <div class="infolabel" *ngIf="action != ''" id="action">{{action}}</div>
 </div>

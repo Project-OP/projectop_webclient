@@ -11,6 +11,8 @@ import { TurnactionsComponent } from './components/turnactions/turnactions.compo
 import { MessagewindowComponent } from './components/messagewindow/messagewindow.component';
 import { AdminwindowComponent } from './components/adminwindow/adminwindow.component';
 import { CommunitycardsComponent } from './components/communitycards/communitycards.component';
+import { PotbetinfoComponent } from './components/potbetinfo/potbetinfo.component';
+import { DealerbuttonComponent } from './components/dealerbutton/dealerbutton.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { CommunitycardsComponent } from './components/communitycards/communityca
     TurnactionsComponent,
     MessagewindowComponent,
     AdminwindowComponent,
-    CommunitycardsComponent
+    CommunitycardsComponent,
+    PotbetinfoComponent,
+    DealerbuttonComponent
   ],
   imports: [
     BrowserModule,
