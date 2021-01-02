@@ -3,7 +3,7 @@
 <div id="area" class="centerhv" >
     <app-dealerbutton></app-dealerbutton>
     <img id="table" #table alt="table"  src="/assets/img/table.png" />
-    <app-communitycards></app-communitycards>
+    <app-communitycards #cards></app-communitycards>
     <app-potbetinfo></app-potbetinfo>
     <div id="seats">
         <app-seat #seats *ngFor="let x of seats" ></app-seat>

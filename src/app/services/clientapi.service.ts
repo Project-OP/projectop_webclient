@@ -21,6 +21,7 @@ export class ClientapiService {
 
    }
 
+
   
   public async NewGame(name: string): Promise<New_Room_Resp |ClientError >{
     try{
@@ -36,10 +37,13 @@ export class ClientapiService {
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+roomid+"/join/"+name, {responseType:'json'}).toPromise();
       this.room = e;
+      this.OnRoomData.emit("sit");
 
       return e;
     }catch(er){
-      return this.toJsonError(er);
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
     }
   }
 
@@ -47,10 +51,46 @@ export class ClientapiService {
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+this.room.id+"/startgame", {responseType:'json'}).toPromise();
       this.room = e;
+      this.OnRoomData.emit("sit");
 
       return e;
     }catch(er){
-      return this.toJsonError(er);
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
+  public async NewRound(): Promise<Room_Client |ClientError>{
+    try{
+      
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/startgame`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("new round");
+
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
+  public async Turn(amount: number): Promise<Room_Client |ClientError>{
+    try{
+      let a = "set";
+      if (amount == -1){
+        a = "fold"
+      }
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/turn/${a}/${amount}`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("sit");
+
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
     }
   }
 
@@ -60,7 +100,9 @@ export class ClientapiService {
 
       return e;
     }catch(er){
-      return this.toJsonError(er);
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
     }
   }
 

@@ -21,9 +21,14 @@ export class HotkeyService {
     @Inject(DOCUMENT) private document: Document) { 
   }
 
-  addShortcut(options: Partial<Options>) {
+  addShortcut(options: Partial<Options>, keydown = false) {
     const merged = { ...this.defaults, ...options };
-    const event = `keyup.${merged.keys}`;
+
+    let event = `keyup.${merged.keys}`;
+    if (keydown){
+      event = `keydown.${merged.keys}`;
+    }
+    
 
     //merged.description && this.hotkeys.set(merged.keys, merged.description);
 

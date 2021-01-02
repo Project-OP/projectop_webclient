@@ -13,38 +13,7 @@ export class TurnactionsComponent implements OnInit {
   constructor(private hotkeys: HotkeyService) {}
 
   ngOnInit() {
-    this.hotkeys.addShortcut({ keys: 'enter' }).pipe().subscribe(()=>{
-      console.log("submit action");
-    });
-    this.hotkeys.addShortcut({ keys: 'space' }).pipe().subscribe(()=>{
-      console.log("check/call");
-    });
-
-    this.hotkeys.addShortcut({ keys: 'f' }).pipe().subscribe(()=>{
-      console.log("fold");
-    });
-
-
-    this.hotkeys.addShortcut({ keys: 'a' }).pipe().subscribe(()=>{
-      console.log("all in");
-    });
-
-    this.hotkeys.addShortcut({ keys: 'ArrowUp' }).pipe().subscribe(()=>{
-      console.log("raise");
-    });
-
-    this.hotkeys.addShortcut({ keys: 'shift.ArrowUp' }).pipe().subscribe(()=>{
-      console.log("raise more");
-    });
-
-    this.hotkeys.addShortcut({ keys: 'ArrowDown' }).pipe().subscribe(()=>{
-      console.log("lower raise");
-    });
-
-    this.hotkeys.addShortcut({ keys: 'shift.ArrowDown' }).pipe().subscribe(()=>{
-      console.log("lower raise more");
-    });
-
+    
     
     this.hotkeys.addShortcut({ keys: 'h' }).pipe().subscribe(()=>{
       this.visible = !this.visible;
