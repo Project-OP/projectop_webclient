@@ -13,6 +13,9 @@ import { AdminwindowComponent } from './components/adminwindow/adminwindow.compo
 import { CommunitycardsComponent } from './components/communitycards/communitycards.component';
 import { PotbetinfoComponent } from './components/potbetinfo/potbetinfo.component';
 import { DealerbuttonComponent } from './components/dealerbutton/dealerbutton.component';
+import { LobbyComponent } from './pages/lobby/lobby.component';
+import { MsgdialogComponent } from './components/msgdialog/msgdialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,12 +29,16 @@ import { DealerbuttonComponent } from './components/dealerbutton/dealerbutton.co
     AdminwindowComponent,
     CommunitycardsComponent,
     PotbetinfoComponent,
-    DealerbuttonComponent
+    DealerbuttonComponent,
+    LobbyComponent,
+    MsgdialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

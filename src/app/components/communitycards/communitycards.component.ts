@@ -8,7 +8,7 @@ import { CardComponent } from '../card/card.component';
 })
 export class CommunitycardsComponent implements OnInit {
 
-  cards: CardComponent[];
+  cards: CardComponent[] = [];
 
   constructor() {
     this.cards = new Array<CardComponent>();

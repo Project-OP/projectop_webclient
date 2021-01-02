@@ -1,0 +1,23 @@
+<form [formGroup]="form" id="content" (ngSubmit)="submit()">
+    <h1>Lobby</h1>
+    <div id="">
+        <label class="block">Name</label>
+        
+        <input formControlName="name" id="nameinput" type="text" formControlName="name">
+        
+        <div id="radiogroup">
+        <input formControlName="newjoin" id="new_rd" name="newjoin" type="radio" value="new">
+        <label class="radiolbl" for="new_rd" >New</label> 
+        
+        <input formControlName="newjoin" id="join_rd" name="newjoin" type="radio" value="join">
+        <label class="radiolbl" for="join_rd">Join</label> 
+        </div>
+
+        <label *ngIf="join" id="roomidlbl" for="roomid">Room ID</label>
+        <input *ngIf="join" formControlName="roomid" id="roomid" type="text">
+
+        <button>Start Game</button>
+    </div>
+
+</form >
+

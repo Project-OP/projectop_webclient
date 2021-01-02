@@ -54,6 +54,7 @@ export class TableComponent implements OnInit {
 
   ngAfterViewInit(){
     this.document.body.classList.add('table_background');
+    this.document.body.classList.remove('lobby_background');
     console.log(this.seats_elem.toArray());
     const table_dom = this.table.nativeElement;
     console.log(table_dom.offsetWidth, table_dom.offsetHeight );
