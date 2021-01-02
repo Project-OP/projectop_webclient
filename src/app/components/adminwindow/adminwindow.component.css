@@ -1,0 +1,27 @@
+ul{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    align-items: stretch; /* Default */
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 10px;
+    
+}
+
+
+li {
+    display: block;
+    flex: 0 1 auto; /* Default */
+    list-style-type: none;
+    background: #00000063;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.336);
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}

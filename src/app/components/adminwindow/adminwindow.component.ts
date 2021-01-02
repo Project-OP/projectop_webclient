@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminwindowComponent implements OnInit {
 
+  visible = false;
   constructor() { }
 
   ngOnInit(): void {
