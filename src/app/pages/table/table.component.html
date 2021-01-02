@@ -1,10 +1,10 @@
 <app-msgdialog #msgbox></app-msgdialog>
 
 <div id="area" class="centerhv" >
-    <app-dealerbutton></app-dealerbutton>
+    <app-dealerbutton [dealer]="room.table.dealerpos"></app-dealerbutton>
     <img id="table" #table alt="table"  src="/assets/img/table.png" />
-    <app-communitycards #cards></app-communitycards>
-    <app-potbetinfo></app-potbetinfo>
+    <app-communitycards  #cards [cards_data]="room.table.cards_center"></app-communitycards>
+    <app-potbetinfo [room]="room"></app-potbetinfo>
     <div id="seats">
         <app-seat #seats *ngFor="let x of seats" ></app-seat>
     </div>

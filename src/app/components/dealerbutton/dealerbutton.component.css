@@ -3,6 +3,11 @@ img{
     width: 15px;
     left:0px;
     top: 0px;
+    display: none;
+}
+
+.visible{
+    display: block;
 }
 
 img:nth-child(1){

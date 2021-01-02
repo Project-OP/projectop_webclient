@@ -1,8 +1,10 @@
-:host img{
+img{
     height: 110px;
-    
+    border: none;
     background-size: cover;
-
+    
 }
+
+
 
 

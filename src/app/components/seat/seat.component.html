@@ -2,9 +2,13 @@
     
     <button (click)="sitbtn()" *ngIf="sithere != '' && !playerIsSitting && Player.empty" class="sitheresitout">{{sithere}}</button>
     <div *ngIf="!Player.empty" >
-        <div id="cards">
+        <div id="cards" *ngIf="Player.Cards.length > 0">
             
-            <app-card #cards *ngFor="let c of Player.Cards" [card]="c" [ego]="isEgo"></app-card>
+            <app-card  #cards *ngFor="let c of Player.Cards" [card]="c" [ego]="isEgo"></app-card>
+        </div>
+        <!--  dummy placeholder to adjust height -->
+        <div id="cards" *ngIf="Player.Cards.length == 0">
+            <app-card></app-card>
         </div>
          
         <div class="infolabel" id="name">{{name}}</div>

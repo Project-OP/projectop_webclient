@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { CardComponent } from '../card/card.component';
 
 @Component({
@@ -8,17 +9,17 @@ import { CardComponent } from '../card/card.component';
 })
 export class CommunitycardsComponent implements OnInit {
 
-  cards: CardComponent[] = [];
+  @Input()
+  cards_data: Card_Client[] = [];
+  //cards: CardComponent[] = [];
 
-  constructor() {
-    this.cards = new Array<CardComponent>();
-    for (let i = 0; i < 5; i++){
-      this.cards.push(new CardComponent());
-    }
-  
+   constructor() {
+    
    }
 
   ngOnInit(): void {
   }
+
+  
 
 }

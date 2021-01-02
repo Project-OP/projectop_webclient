@@ -1,7 +1,5 @@
 
 import { Player_Client } from "./Player_Client";
-import { Hand_Client } from "./Hand_Client";
-import { Card_Client } from "./Card_Client";
 import { Table } from "../data/Table";
 
 

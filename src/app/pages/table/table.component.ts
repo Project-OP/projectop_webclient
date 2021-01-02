@@ -9,6 +9,7 @@ import { MsgdialogComponent } from 'src/app/components/msgdialog/msgdialog.compo
 import { SeatComponent } from 'src/app/components/seat/seat.component';
 import { ClientapiService } from 'src/app/services/clientapi.service';
 import { HotkeyService } from 'src/app/services/hotkey.service';
+import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { ClientError } from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';
 import { Player_Client } from 'src/pots/client_data/Player_Client';
@@ -48,6 +49,8 @@ export class TableComponent implements OnInit {
 
   seats: Array<Player_Client>;
   room: Room_Client;
+
+  center: Card_Client[] = []
 
   private onRoomSubscription: Subscription; 
   private onError: Subscription; 
@@ -246,16 +249,19 @@ export class TableComponent implements OnInit {
     if (this.room == null){
       return;
     }
-    
+    console.log(this.room);
     this.egoPos = this.room.table.egoPos;
     
     const notstarted = this.room.table.active;
     const dealerpos = this.room.table.dealerpos;
     const centercards = this.room.table.cards_center;
     const egoPos = this.room.table.egoPos;
+    if (egoPos != -1){
+      this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
+      this.callValue = Math.max(this.callValue, 0);
+    }
     
-    this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
-    this.callValue = Math.max(this.callValue, 0);
+    
     const winners = this.room.table.winner_pos;
     const current_turn_pos = this.room.table.player_turn;
     const seat_components = this.seats_elem.toArray();
@@ -269,11 +275,14 @@ export class TableComponent implements OnInit {
         }
         const component = seat_components[pos];
         seat_components[pos].playerIsSitting = egoPos > 0;
+        if (winners){
+          const sIsInWinner = winners.includes(pos);
+          component.playerWon = sIsInWinner;
+        }
         
-        const sIsInWinner = winners.includes(pos);
         const sHasTurn = pos == this.room.table.player_turn;
   
-        component.playerWon = sIsInWinner;
+        
         component.playerTurn = sHasTurn;
 
 

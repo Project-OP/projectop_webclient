@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Room_Client } from 'src/pots/client_data/Room_Client';
 
 @Component({
   selector: 'app-potbetinfo',
@@ -7,7 +8,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PotbetinfoComponent implements OnInit {
 
-  bets: number[] = [1,2,3,4,5,6,7,8];
+  @Input()
+  set room(r: Room_Client){
+    if (r == null){
+      this.bets = ["","","","","","","",""];
+      this.pot = 0;
+      return;
+    }
+
+    r.seats.forEach((v,i)=>{
+      if (v.empty){
+        this.bets[i] = "";
+      }else{
+        this.bets[i] = ""+v.roundturn.amount;
+      }
+        
+      
+      
+      
+    });
+    this.pot = r.table.pot;
+
+  }
+
+
+
+  bets: string[] = ["","","","","","","",""];
   pot: number = 0;
 
   constructor() { }

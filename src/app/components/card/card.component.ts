@@ -40,7 +40,11 @@ export class CardComponent implements OnInit {
 
       return "/assets/img/back.png";
     }else{
-      return `/assets/img/cards_single/${this._card.color[0]}${this._card.value}.png`;
+      let v = this._card.value[0];
+      if (this._card.value == "10"){
+        v = "10"
+      }
+      return `/assets/img/cards_single/${this._card.color[0]}${v}.png`;
     }
     
   }
