@@ -7,12 +7,11 @@
     
     
     justify-content: flex-start;
-    left: 140px;
-    top:115px;
+    left: 110px;
+    top:100px;
 }
 
 
 #cards{
-    zoom: 0.9;
-    transform: scale(.9);
+    transform: scale(.82);
 }
