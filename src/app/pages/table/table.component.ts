@@ -109,8 +109,10 @@ export class TableComponent implements OnInit {
         this.router.navigate(['/lobby']);
         return;
       }
+      
       console.log("event: ",s);
       this.room = this.api.room;
+      
       this.RenderRoom();
     });
 
@@ -334,6 +336,25 @@ export class TableComponent implements OnInit {
     //console.log(this.seats_elem.toArray());
     const table_dom = this.table.nativeElement;
     //console.log(table_dom.offsetWidth, table_dom.offsetHeight );
+    this.checkPeriodically();
+    
+  }
+
+  checkPeriodically(){
+    console.log("check");
+    setTimeout(()=>{
+      if (this.room){
+        if (this.room.id != "" &&  this.room.table.egoPos == -1){
+          this.api.Refresh();  
+        }
+        if (this.room.table.egoPos > -1){
+          console.log("check done");
+          return;
+        }
+        this.checkPeriodically();
+      }
+    },5000);
+    
   }
 
   @HostListener('window:resize', ['$event'])

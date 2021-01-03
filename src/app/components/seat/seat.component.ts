@@ -25,8 +25,8 @@ export class SeatComponent implements OnInit {
     }else{
       return this._action;
     }
-  }
-
+  } 
+ 
   set setaction(v: string){
     this._action = v;
   }

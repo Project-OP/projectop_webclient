@@ -11,13 +11,17 @@ export class PingpongService {
   constructor(private api: ClientapiService, private router: Router) { }
   ws: WebSocket;
 
+  fallback = false;
+
   onopen(){
     console.log("ws connected");
 
   }
   onclose(){
     console.log("disconnected from ws, reconnecting in 30s");
+    this.fallbackPolling();
     setTimeout(()=>{
+
       console.log("reconnecting to ws...");
       this.Connect();
     },30000);
@@ -26,7 +30,7 @@ export class PingpongService {
     if (e == "Update"){
       this.api.Refresh();
     }
-  }
+  } 
 
   onerror(){
     console.log("ws error"); 
@@ -45,11 +49,11 @@ export class PingpongService {
     //
     console.log("ws connecting to",this.ws.url);
     
-    this.ws.onopen = this.onopen;
+    this.ws.onopen = () => {this.onopen();};
     this.ws.onmessage = (e)=>{this.onmessage(e.data);};
-    this.ws.onclose = this.onclose;
-    this.ws.onerror = this.onerror;
-   
+    this.ws.onclose = () => {this.onclose();};
+    this.ws.onerror = () =>  {this.onerror();};
+    
     this.sendPing();
   }
 
@@ -61,6 +65,25 @@ export class PingpongService {
       this.sendPing();
     },5000);
   
+  }
+
+  fallbackPolling(){
+    this.fallback = true;
+    console.log("ws connection lost, switch to fallback polling");
+    setTimeout(()=>{
+      this.fallback = true;
+      if (this.ws.readyState != WebSocket.OPEN){
+        if (this.api.room && this.api.room.id != ""){
+          this.api.Refresh();
+        }
+        this.fallbackPolling();
+      }else{
+        this.fallback = false;
+        return;
+ 
+      }
+    },5000);
+    
   }
  
 }
