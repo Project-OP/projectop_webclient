@@ -33,7 +33,9 @@ export class PingpongService {
   }
 
   public Connect(){
-    if (this.router.url.indexOf("localhost")){
+    const i = window.location.origin.includes("localhost");
+    console.log(i);
+    if (i){
       
       this.ws = new WebSocket("ws://localhost:3000/heartbeat");
 
