@@ -1,6 +1,8 @@
 import { ThrowStmt } from '@angular/compiler';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ClientapiService } from 'src/app/services/clientapi.service';
+import { PingpongService } from 'src/app/services/pingpong.service';
 import { Player_Client } from 'src/pots/client_data/Player_Client';
 import { Card } from 'src/pots/data/Card';
 import { CardComponent } from '../card/card.component';
@@ -16,11 +18,16 @@ export class SeatComponent implements OnInit {
   index: number = 0;
   room = "";
   _action:string = "";
+  
+
   get action(){
     if (this.playerWon){
       return "winner";
     }
     if (!this.playerTurn && !this.sitout && this.isEgo){
+      if (this._action == "NOT YOUR TURN"){
+        return this._action;
+      }
       return "not your turn";
     }else{
       return this._action;
@@ -40,10 +47,14 @@ export class SeatComponent implements OnInit {
   sitout = false;
   fold = false;
   sitoutfold="";
+
+  nudge = false;
   
   @ViewChildren('cards') 
   cards: QueryList<CardComponent>; 
 
+
+  
 
   constructor(private api: ClientapiService) {
 
@@ -96,6 +107,7 @@ export class SeatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
 }

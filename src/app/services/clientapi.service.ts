@@ -251,6 +251,15 @@ export class ClientapiService {
     }
   }
 
+  public NotifyTurn(): void{
+    try{
+      this.http.get(`/game/id/${this.room.id}/notifyactive/`).toPromise();
+    }catch(er){
+      //nop
+    }
+  }
+
+
  private toJsonError(er: HttpErrorResponse): ClientError
  {
   

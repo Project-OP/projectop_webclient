@@ -1,11 +1,11 @@
-<div id="outer" [ngClass]="{'winner':playerWon,'turn':playerTurn && !playerWon && Player.you,'oturn':playerTurn && !playerWon && !Player.you}" >
+<div #cardsanim id="outer" [ngClass]="{'winner':playerWon,'turn':playerTurn && !playerWon && Player.you,'oturn':playerTurn && !playerWon && !Player.you}" >
     
     <button (click)="sitbtn()" *ngIf="(sithere == 'sit here' && !playerIsSitting && Player.empty) || (sitout && Player.you ) " class="sitheresitout">{{sithere}}</button>
     <div *ngIf="!Player.empty" >
         
-        <div id="cards" *ngIf="Player.Cards.length > 0">
+        <div  id="cards" *ngIf="Player.Cards.length > 0">
             
-            <app-card  #cards *ngFor="let c of Player.Cards" [card]="c" [ego]="isEgo" [hide]="sitout || fold"></app-card>
+            <app-card [ngClass]="{'nudge':nudge}" #cards *ngFor="let c of Player.Cards" [card]="c" [ego]="isEgo" [hide]="sitout || fold"></app-card>
         </div>
         <!--  dummy placeholder to adjust height -->
         <div id="cards" *ngIf="Player.Cards.length == 0">

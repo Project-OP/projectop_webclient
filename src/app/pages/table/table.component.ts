@@ -29,6 +29,7 @@ export class TableComponent implements OnInit {
   private callValue = 0;
   private turnAction = "";
   private turnValue = 0;
+  private ws_subscription: Subscription;
 
   @ViewChild('msgbox') 
   msgbox: MsgdialogComponent; 
@@ -84,18 +85,157 @@ export class TableComponent implements OnInit {
         
       });
 
+  
     }
-    /*
-    @HostListener('document:keydown', ['$event'])
-    handleDeleteKeyboardEvent(event: KeyboardEvent) {
-      console.log(event);
-      if(event.key === 'Delete')
-      {
-        // remove something...
-      }
+  
+    
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardDownEvent(event: KeyboardEvent) {
+    let shift = "";
+    if (event.shiftKey){
+      shift = "shift.";
     }
+    let n = shift+event.key;
+    switch(n){
+      case "ArrowUp":
+        this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb);
+      break;
+      case "shift.ArrowUp":
+        this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb*5);
+      break;
 
-    */
+      case "ArrowDown":
+        this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb);
+      break;
+      case "shift.ArrowDown":
+        this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb*5);
+      break;
+    }
+  }
+  
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardUpEvent(event: KeyboardEvent) {
+      
+
+      let shift = "";
+      if (event.shiftKey){
+        shift = "shift.";
+      }
+      let n = shift+event.key;
+      switch(n){
+          case "Enter":
+            const winner = this.room?.table?.winner_pos?.length > 0;
+          const notactive = !this.room.table.active;
+          if (notactive || winner){
+
+          this.api.NewRound();
+          return;
+          }
+          if (this.turnAction == "sit out"){
+          this.api.Sitout(false);
+          return;
+          }
+          if (this.turnAction == ""){
+          this.hotkeyTurnAction(0);
+          }
+          const v = this.turnValue;
+          if (this.room.table.player_turn != this.egoPos){
+          this.ego.setaction = "NOT YOUR TURN";
+          setTimeout(()=>{
+            this.ego.setaction = "not your turn";
+          },500);
+          return;
+          }
+          this.api.Turn(v);
+          this.turnValue = 0;
+          this.turnAction = "";
+        break;
+        
+        case " ":
+          this.hotkeyTurnAction(this.room.table.current_min_bet);
+        break;
+
+        case "n":
+          console.log("notify turn");
+          this.api.NotifyTurn();
+        break;
+
+        case "f":
+          this.hotkeyTurnAction(-1,true);
+        break;
+
+        case "a":
+          this.hotkeyTurnAction(this.room.seats[this.room.table.egoPos].Balance);
+        break;
+
+        case "o":
+          this.turnAction = "sitout";
+          if (this.room.table.player_turn != this.room.table.egoPos){
+            const e = this.room.seats[this.egoPos];
+            const sout = !e.roundturn.join_next_round && (e.roundturn.sitout ||e.roundturn.sitout_next_turn);
+            console.log(!e.roundturn.join_next_round ,e.roundturn.sitout ,e.roundturn.sitout_next_turn);
+            this.api.Sitout(sout);
+          }else{
+            this.hotkeyTurnAction(-1,true,true);
+          }
+        break;
+
+        case "shift.F":
+          this.api.Admin_Fold();
+        break;
+
+        case "shift.R":
+          this.api.Admin_Revoke();
+        break;
+
+        case "shift.G":
+          this.api.Admin_Promote();
+        break;
+
+        case "shift.K":
+          this.api.Admin_Kick();
+        break;
+
+        case "+":
+          let b = this.ego.balance+10;
+          if (b < 0){
+            b = 0;
+          }
+          this.api.Admin_SetAmount(b);
+        break;
+
+        case "-":
+          b = this.ego.balance-10;
+          if (b < 0){
+            b = 0;
+          }
+          this.api.Admin_SetAmount(b);
+        break;
+
+        case "shift.+":
+          b = this.ego.balance+50;
+          if (b < 0){
+            b = 0;
+          }
+          this.api.Admin_SetAmount(b);
+        break;
+
+        case "shift.-":
+          b = this.ego.balance-50;
+          if (b < 0){
+            b = 0;
+          }
+          this.api.Admin_SetAmount(b);
+        break;
+
+
+
+      }
+    
+  }
+
+  
+    
   async ngOnInit(): Promise<void> {
 
     this.ws.Connect();
@@ -140,29 +280,33 @@ export class TableComponent implements OnInit {
       
     }
 
+
+    
+    this.ws_subscription = this.ws.wsMessages.subscribe((o: string)=>{
+      if (o.startsWith("Hey")){
+        const num = Number.parseInt(o.slice(4,5));    
+        this.seats_elem.toArray()[num].nudge = true;
+    
+        setTimeout(()=>{
+      
+            this.seats_elem.toArray()[num].nudge = false;
+        },300);
+              
+      }
+    });
+    
+    
+  
+
+
+
     // hotkeys
     this.hotkeys.addShortcut({ keys: 'enter' }).pipe().subscribe(()=>{
-      const winner = this.room?.table?.winner_pos?.length > 0;
-      const notactive = !this.room.table.active;
-      if (notactive || winner){
-        
-        this.api.NewRound();
-        return;
-      }
-      if (this.turnAction == "sit out"){
-        this.api.Sitout(false);
-        return;
-      }
-      if (this.turnAction == ""){
-        this.hotkeyTurnAction(0);
-      }
-      const v = this.turnValue;
-      this.api.Turn(v);
-      this.turnValue = 0;
-      this.turnAction = "";
+      
       
     });
 
+    /*
     this.hotkeys.addShortcut({ keys: 'space' }).pipe().subscribe(()=>{
       console.log("check/call");
       this.hotkeyTurnAction(this.room.table.current_min_bet);
@@ -269,8 +413,12 @@ export class TableComponent implements OnInit {
       }
       this.api.Admin_SetAmount(b);
     });
+
+    this.hotkeys.addShortcut({ keys: 'n' }).pipe().subscribe(()=>{
+      this.api.NotifyTurn();
+    });
     
-    
+    */    
   }
 
   private hotkeyTurnAction(value: number = -1, fold=false, sitout=false){
@@ -338,6 +486,7 @@ export class TableComponent implements OnInit {
     //console.log(table_dom.offsetWidth, table_dom.offsetHeight );
     this.checkPeriodically();
     
+
   }
 
   checkPeriodically(){
@@ -433,7 +582,11 @@ export class TableComponent implements OnInit {
 
   }
 
+
+
   async ngOnDestroy(): Promise<void>{
+    this.ws_subscription.unsubscribe();
+
     this.onRoomSubscription.unsubscribe();
     this.onError.unsubscribe();
     await this.api.Leave();

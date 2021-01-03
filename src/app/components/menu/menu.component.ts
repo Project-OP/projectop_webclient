@@ -16,8 +16,13 @@ export class MenuComponent implements OnInit {
   }
 
   async leave(){
-    await this.api.Leave();
-    this.router.navigate(['/lobby']);
+    try{
+      await this.api.Leave();
+    }finally{
+      this.router.navigate(['/lobby']);
+    }
+    
+    
 
   }
 

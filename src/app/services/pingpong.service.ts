@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Observer, Subject } from 'rx';
+import { Observer } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ClientapiService } from './clientapi.service';
 
 @Injectable({
@@ -12,6 +13,11 @@ export class PingpongService {
   ws: WebSocket;
 
   fallback = false;
+  private wsMessageObserver: Observer<string>;
+  public wsMessages = new Observable((observer: Observer<string>)=>{
+    this.wsMessageObserver = observer;
+  });
+    
 
   onopen(){
     console.log("ws connected");
@@ -30,6 +36,8 @@ export class PingpongService {
     if (e == "Update"){
       this.api.Refresh();
     }
+    
+    this.wsMessageObserver.next(e);
   } 
 
   onerror(){

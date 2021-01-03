@@ -54,6 +54,12 @@
   border-radius: 10px;
 }
 
+.nudge{
+  position: relative;
+  top: -6px;
+
+}
+
 #outer.turn{
   background-color: rgba(57, 255, 31, 0.41);
   
