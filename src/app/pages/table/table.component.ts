@@ -146,6 +146,10 @@ export class TableComponent implements OnInit {
         this.api.NewRound();
         return;
       }
+      if (this.turnAction == "sit out"){
+        this.api.Sitout(false);
+        return;
+      }
       if (this.turnAction == ""){
         this.hotkeyTurnAction(0);
       }
@@ -191,6 +195,22 @@ export class TableComponent implements OnInit {
     this.hotkeys.addShortcut({ keys: 'shift.ArrowDown' },true).pipe().subscribe(()=>{
       console.log("lower raise more");
       this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb*5);
+
+    });
+
+    this.hotkeys.addShortcut({ keys: 'o' },true).pipe().subscribe(()=>{
+      console.log("sitout");
+      this.turnAction = "sitout";
+      if (this.room.table.player_turn != this.room.table.egoPos){
+        const e = this.room.seats[this.egoPos];
+        const sout = !e.roundturn.join_next_round && (e.roundturn.sitout ||e.roundturn.sitout_next_turn);
+        console.log(!e.roundturn.join_next_round ,e.roundturn.sitout ,e.roundturn.sitout_next_turn);
+        this.api.Sitout(sout);
+      }else{
+        this.hotkeyTurnAction(-1,true,true);
+      }
+      
+
 
     });
 
@@ -250,7 +270,7 @@ export class TableComponent implements OnInit {
     
   }
 
-  private hotkeyTurnAction(value: number = -1, fold=false){
+  private hotkeyTurnAction(value: number = -1, fold=false, sitout=false){
     if (this.egoPos < 0 || this.room.table.player_turn != this.egoPos){
       return;
     }
@@ -282,8 +302,14 @@ export class TableComponent implements OnInit {
 
 
     if (fold){
+
       value = -1;
       this.turnAction = "fold";
+    }
+
+    if (sitout){
+      value = -1;
+      this.turnAction = "sit out";
     }
     
     
@@ -295,7 +321,7 @@ export class TableComponent implements OnInit {
     }
 
     if (this.ego){
-      this.ego.action = this.turnAction+ " "+v;
+      this.ego.setaction = this.turnAction+ " "+v;
     }
     
     
@@ -320,10 +346,16 @@ export class TableComponent implements OnInit {
     if (this.room == null){
       return;
     }
-    this.egoPos = this.room.table.egoPos;
     
+    let egoPos = -1;
+
+    this.room.seats.forEach((seat, pos)=>{
+      if(seat.you){
+        this.egoPos = pos;
+      }
+    });
+    egoPos = this.egoPos;
     
-    const egoPos = this.room.table.egoPos;
     if (egoPos != -1){
       this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
       this.callValue = Math.max(this.callValue, 0);
@@ -334,14 +366,20 @@ export class TableComponent implements OnInit {
     const seat_components = this.seats_elem.toArray();
 
     this.menu.canstart = !this.room.table.active;
+    let playerIsSitting = false;
+    
+    if(egoPos != -1){
+      playerIsSitting = true;
+    }
 
     this.room.seats.forEach((seat, pos)=>{
       if (seat != null){
         if (seat.you){
           this.ego = seat_components[pos];
+          console.log("YOU FOUND", pos);
         }
         const component = seat_components[pos];
-        seat_components[pos].playerIsSitting = egoPos > 0;
+        seat_components[pos].playerIsSitting = playerIsSitting;
         if (winners){
           const sIsInWinner = winners.includes(pos);
           component.playerWon = sIsInWinner;

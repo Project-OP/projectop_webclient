@@ -11,6 +11,9 @@ export class CardComponent implements OnInit {
   private _card: Card_Client;
 
   @Input() 
+  public hide = false;
+
+  @Input() 
   public ego = false;
   constructor() { }
 
@@ -29,6 +32,9 @@ export class CardComponent implements OnInit {
     return "/assets/img/blanc.png";
 
   }else{
+    if (this.hide){
+      return "/assets/img/blanc.png";
+    }
     if (this.ego){
       let v = this._card.value[0];
       if (this._card.value == "10"){

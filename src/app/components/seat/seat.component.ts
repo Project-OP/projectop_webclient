@@ -15,7 +15,21 @@ export class SeatComponent implements OnInit {
   private _player: Player_Client = new Player_Client();
   index: number = 0;
   room = "";
-  action:string = "";
+  _action:string = "";
+  get action(){
+    if (this.playerWon){
+      return "winner";
+    }
+    if (!this.playerTurn && !this.sitout && this.isEgo){
+      return "not your turn";
+    }else{
+      return this._action;
+    }
+  }
+
+  set setaction(v: string){
+    this._action = v;
+  }
   name: string = "Player ";
   balance: number = 0;
   sithere: string = "";//"sit here";
@@ -23,7 +37,9 @@ export class SeatComponent implements OnInit {
   isEgo = false;
   playerWon = false;
   playerTurn = false;
-
+  sitout = false;
+  fold = false;
+  sitoutfold="";
   
   @ViewChildren('cards') 
   cards: QueryList<CardComponent>; 
@@ -41,7 +57,17 @@ export class SeatComponent implements OnInit {
     return this._player;
   }
   set player(p: Player_Client){  
-    
+    this.sitout = (p.roundturn.sitout_next_turn || p.roundturn.sitout ) && !p.roundturn.join_next_round;
+    this.fold = p.roundturn.fold;
+
+    if (this.fold){
+      this.sitoutfold = "fold";
+    }
+     
+    if (this.sitout){
+
+      this.sitoutfold = "sit out";
+    }    
     this._player = p;
     this.name = p.Name;
     this.balance = p.Balance;
@@ -58,7 +84,13 @@ export class SeatComponent implements OnInit {
   
 
   sitbtn(){
-    this.api.Sit(this.index);
+    if (this.sitout){
+      console.log("sit back in");
+      this.api.Sitout(true);
+    }else{
+      this.api.Sit(this.index);
+    }
+    
     //this.api.SitTest(this.room,this.index);
     
   }

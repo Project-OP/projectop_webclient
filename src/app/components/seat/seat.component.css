@@ -26,6 +26,18 @@
 
 }
 
+#sitoutfoldinfo{
+  display: block;
+  background-color: black;
+  color: white;
+  font-size: 33px;
+  position: absolute;
+  border: 1px solid white;
+  top: 40px;
+  left: 35px;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 #name{
 
 
@@ -45,11 +57,19 @@
 #outer.turn{
   background-color: rgba(57, 255, 31, 0.41);
   
+
 }
 #outer.winner{
   background-color: rgba(175, 157, 0, 0.678);
   
+
 }
+#outer.oturn{
+  background-color: rgba(117, 238, 147, 0.37);
+  padding: 4px;
+  margin: 6px;
+}
+
 .sitheresitout{
   display: block;
   position: absolute;

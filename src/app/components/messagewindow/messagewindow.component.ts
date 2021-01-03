@@ -8,28 +8,36 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 export class MessagewindowComponent implements OnInit {
 
   @Input()
-  msg: string;
+  set msg(m: string){
 
-  @Input()
-  set msgnum(n: number){
-    if (!this.msg){
+    if (m == null){
       return;
     }
-    if (n > this._msgnum){
-      this._msgnum = n;
-
-      if (this.msgs.length > 30){
-        this.msgs.shift();
-      }
-      this.msgs.push(this.msg);
-    }
     
+    console.log("recv",m);
+    let time = new Date();
+    const hhmm = ("0" + time.getHours()).slice(-2)   + ":" + ("0" + time.getMinutes()).slice(-2);
+    const hhmmms = hhmm + "> "+m;
+    
+    if (this.msgs.length > 30){
+      this.msgs.shift();
+    }
+    this._msg = m;
+    this.msgs.push(hhmmms);
+
+
   }
+  _msg: string;
+
+  @Input()
+  msgnum: number
+    
+    
+  
 
   @ViewChild('scroll') private scrollable: ElementRef;
 
 
-  _msgnum: number = -1;
   msgs: string[] = [];
   
   constructor() { }

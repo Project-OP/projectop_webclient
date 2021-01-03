@@ -94,6 +94,22 @@ export class ClientapiService {
     }
   }
 
+  public async Sitout(back = false): Promise<Room_Client |ClientError>{
+    try{
+      
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/sitout/${back}/`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("sitout "+back);
+
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
+
   public async Refresh(): Promise<Room_Client |ClientError>{
     try{
       const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/refresh`, {responseType:'json'}).toPromise();
