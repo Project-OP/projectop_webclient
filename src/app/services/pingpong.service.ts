@@ -14,13 +14,19 @@ export class PingpongService {
   ws: WebSocket;
 
   fallback = false;
-  private wsMessageObserver: Observer<string>;
-  public wsMessages = new Observable((observer: Observer<string>)=>{
-    this.wsMessageObserver = observer;
-  });
+
+  public _wsMessages: Subject<string>;
+
+  get wsMessages(){
+    if (!this._wsMessages){
+      this._wsMessages = new Subject();
+    }
+    return this._wsMessages;
+  }
+  
+
 
   public _wsConnection: Subject<number>;
-
   get wsConnection(){
     if (!this._wsConnection){
       this._wsConnection = new Subject();
@@ -50,7 +56,7 @@ export class PingpongService {
       this.api.Refresh();
     }
     
-    this.wsMessageObserver?.next(e);
+    this.wsMessages?.next(e);
   } 
  
   onerror(){
