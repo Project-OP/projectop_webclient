@@ -58,6 +58,7 @@ export class TableComponent implements OnInit {
   private onRoomSubscription: Subscription; 
   private onError: Subscription; 
 
+  private dirtyTurn = false;
 
   constructor(
     private api: ClientapiService,
@@ -124,30 +125,31 @@ export class TableComponent implements OnInit {
       switch(n){
           case "Enter":
             const winner = this.room?.table?.winner_pos?.length > 0;
-          const notactive = !this.room.table.active;
-          if (notactive || winner){
+            const notactive = !this.room.table.active;
+            this.dirtyTurn = false;
+            if (notactive || winner){
 
-          this.api.NewRound();
-          return;
-          }
-          if (this.turnAction == "sit out"){
-          this.api.Sitout(false);
-          return;
-          }
-          if (this.turnAction == ""){
-          this.hotkeyTurnAction(0);
-          }
-          const v = this.turnValue;
-          if (this.room.table.player_turn != this.egoPos){
-          this.ego.setaction = "NOT YOUR TURN";
-          setTimeout(()=>{
-            this.ego.setaction = "not your turn";
-          },500);
-          return;
-          }
-          this.api.Turn(v);
-          this.turnValue = 0;
-          this.turnAction = "";
+            this.api.NewRound();
+              return;
+            }
+            if (this.turnAction == "sit out"){
+            this.api.Sitout(false);
+              return;
+            }
+            if (this.turnAction == ""){
+              this.hotkeyTurnAction(0);
+            }
+            const v = this.turnValue;
+            if (this.room.table.player_turn != this.egoPos){
+              this.ego.setaction = "NOT YOUR TURN";
+                setTimeout(()=>{
+                  this.ego.setaction = "not your turn";
+                },500);
+              return;
+            }
+            this.api.Turn(v);
+            this.turnValue = 0;
+            this.turnAction = "";
         break;
         
         case " ":
@@ -300,6 +302,7 @@ export class TableComponent implements OnInit {
     if (this.egoPos < 0 || this.room.table.player_turn != this.egoPos){
       return;
     }
+
     if (value < this.room.seats[this.room.table.egoPos].Balance && value > this.room.table.current_min_bet){
       value = value - (value % this.room.table.current_bb);
     }
@@ -446,7 +449,10 @@ export class TableComponent implements OnInit {
 
       }
 
-      this.hotkeyTurnAction(this.callValue);
+      if (!this.dirtyTurn){
+        this.hotkeyTurnAction(this.callValue);
+      }
+      
 
     
       
