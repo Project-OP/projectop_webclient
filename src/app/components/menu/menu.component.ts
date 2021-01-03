@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ClientapiService } from 'src/app/services/clientapi.service';
 
 @Component({
@@ -9,13 +10,15 @@ import { ClientapiService } from 'src/app/services/clientapi.service';
 export class MenuComponent implements OnInit {
 
   canstart = false;
-  constructor(private api: ClientapiService) { }
+  constructor(private api: ClientapiService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  leave(){
-    this.api.Leave();
+  async leave(){
+    await this.api.Leave();
+    this.router.navigate(['/lobby']);
+
   }
 
   start(){
