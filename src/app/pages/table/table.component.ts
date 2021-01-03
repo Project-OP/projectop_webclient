@@ -143,6 +143,7 @@ export class TableComponent implements OnInit {
       const winner = this.room?.table?.winner_pos?.length > 0;
       const notactive = !this.room.table.active;
       if (notactive || winner){
+        
         this.api.NewRound();
         return;
       }
@@ -376,7 +377,6 @@ export class TableComponent implements OnInit {
       if (seat != null){
         if (seat.you){
           this.ego = seat_components[pos];
-          console.log("YOU FOUND", pos);
         }
         const component = seat_components[pos];
         seat_components[pos].playerIsSitting = playerIsSitting;
@@ -389,7 +389,11 @@ export class TableComponent implements OnInit {
   
         
         component.playerTurn = sHasTurn;
-
+        console.log("raction",seat.roundturn.round_action);
+        if (pos != egoPos){
+          component.setaction = seat.roundturn.round_action;
+        }
+        
 
         component.player = seat;
         component.index = pos;
