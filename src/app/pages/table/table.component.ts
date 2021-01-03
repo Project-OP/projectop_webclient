@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rx';
 import { Subscription } from 'rxjs';
 import { CommunitycardsComponent } from 'src/app/components/communitycards/communitycards.component';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
@@ -9,6 +10,7 @@ import { MsgdialogComponent } from 'src/app/components/msgdialog/msgdialog.compo
 import { SeatComponent } from 'src/app/components/seat/seat.component';
 import { ClientapiService } from 'src/app/services/clientapi.service';
 import { HotkeyService } from 'src/app/services/hotkey.service';
+import { PingpongService } from 'src/app/services/pingpong.service';
 import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { ClientError } from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';
@@ -61,7 +63,8 @@ export class TableComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private router: Router,
-    private hotkeys: HotkeyService
+    private hotkeys: HotkeyService,
+    private ws: PingpongService
     ) 
     {
       const seats_init: Array<Player_Client> = [];
@@ -82,11 +85,20 @@ export class TableComponent implements OnInit {
       });
 
     }
-    
+    /*
+    @HostListener('document:keydown', ['$event'])
+    handleDeleteKeyboardEvent(event: KeyboardEvent) {
+      console.log(event);
+      if(event.key === 'Delete')
+      {
+        // remove something...
+      }
+    }
 
-
+    */
   async ngOnInit(): Promise<void> {
-    
+
+    this.ws.Connect();
     this.onError = this.api.OnApiError.subscribe((e: ClientError) => {
       console.log("error",e);
       this.msgbox.setError(e);
@@ -128,14 +140,20 @@ export class TableComponent implements OnInit {
 
     // hotkeys
     this.hotkeys.addShortcut({ keys: 'enter' }).pipe().subscribe(()=>{
-      if (this.room.table.winner_pos.length > 0){
+      const winner = this.room?.table?.winner_pos?.length > 0;
+      const notactive = !this.room.table.active;
+      if (notactive || winner){
         this.api.NewRound();
         return;
       }
       if (this.turnAction == ""){
         this.hotkeyTurnAction(0);
       }
-      this.api.Turn(this.turnValue);
+      const v = this.turnValue;
+      this.api.Turn(v);
+      this.turnValue = 0;
+      this.turnAction = "";
+      
     });
 
     this.hotkeys.addShortcut({ keys: 'space' }).pipe().subscribe(()=>{
@@ -176,6 +194,59 @@ export class TableComponent implements OnInit {
 
     });
 
+
+    // admin commands
+    
+    this.hotkeys.addShortcut({ keys: 'shift.f' }).pipe().subscribe(()=>{
+      console.log("ADMIN: force fold");
+      this.api.Admin_Fold();
+
+    });
+    
+    this.hotkeys.addShortcut({ keys: 'shift.r' }).pipe().subscribe(()=>{
+      console.log("ADMIN: revoke admin rights");
+      this.api.Admin_Revoke();
+    });
+    this.hotkeys.addShortcut({ keys: 'shift.g' }).pipe().subscribe(()=>{
+      console.log("ADMIN: grant admin rights");
+      this.api.Admin_Promote();
+    });
+    this.hotkeys.addShortcut({ keys: 'shift.k' }).pipe().subscribe(()=>{
+      console.log("ADMIN: kick player");
+      this.api.Admin_Kick();
+    });
+
+    this.hotkeys.addShortcut({ keys: '+' }).pipe().subscribe(()=>{
+      let b = this.ego.balance+10;
+      if (b < 0){
+        b = 0;
+      }
+      this.api.Admin_SetAmount(b);
+    });
+
+    this.hotkeys.addShortcut({ keys: '-' }).pipe().subscribe(()=>{
+      let b = this.ego.balance+-50;
+      if (b < 0){
+        b = 0;
+      }
+      this.api.Admin_SetAmount(b);
+    });
+    this.hotkeys.addShortcut({ keys: 'shift.+' }).pipe().subscribe(()=>{
+      let b = this.ego.balance+50;
+      if (b < 0){
+        b = 0;
+      }
+      this.api.Admin_SetAmount(b);
+    });
+
+    this.hotkeys.addShortcut({ keys: 'shift.-' }).pipe().subscribe(()=>{
+      let b = this.ego.balance-50;
+      if (b < 0){
+        b = 0;
+      }
+      this.api.Admin_SetAmount(b);
+    });
+    
     
   }
 
@@ -249,12 +320,9 @@ export class TableComponent implements OnInit {
     if (this.room == null){
       return;
     }
-    console.log(this.room);
     this.egoPos = this.room.table.egoPos;
     
-    const notstarted = this.room.table.active;
-    const dealerpos = this.room.table.dealerpos;
-    const centercards = this.room.table.cards_center;
+    
     const egoPos = this.room.table.egoPos;
     if (egoPos != -1){
       this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
@@ -263,7 +331,6 @@ export class TableComponent implements OnInit {
     
     
     const winners = this.room.table.winner_pos;
-    const current_turn_pos = this.room.table.player_turn;
     const seat_components = this.seats_elem.toArray();
 
     this.menu.canstart = !this.room.table.active;
@@ -303,9 +370,9 @@ export class TableComponent implements OnInit {
 
   }
 
-  ngOnDestroy(): void{
+  async ngOnDestroy(): Promise<void>{
     this.onRoomSubscription.unsubscribe();
     this.onError.unsubscribe();
-    
+    await this.api.Leave();
   }
 }

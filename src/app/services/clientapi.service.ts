@@ -94,6 +94,90 @@ export class ClientapiService {
     }
   }
 
+  public async Refresh(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/refresh`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("update");
+
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
+/*
+  console.log("ADMIN: force fold");
+  ADMIN: kick player
+  ADMIN: revoke admin rights
+  ADMIN: grant admin rights
+  get +-money
+  
+  */
+  
+  public async Admin_Fold(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/fold`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("admin fold");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+  public async Admin_Kick(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/kick`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("admin kick");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+  public async Admin_Promote(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/promote/all`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("admin promote");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+  public async Admin_Revoke(): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/revoke/all`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("admin revoke");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+  public async Admin_SetAmount(amount:number): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/set/${amount}`, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("admin set amount");
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
   public async GetMyRoom(): Promise<MyRoom |ClientError>{
     try{
       const e = await this.http.get<MyRoom>("/game/myroom/", {responseType:'json'}).toPromise();

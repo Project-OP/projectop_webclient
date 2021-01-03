@@ -15,7 +15,7 @@ export class SeatComponent implements OnInit {
   private _player: Player_Client = new Player_Client();
   index: number = 0;
   room = "";
-  action:string = "checks";
+  action:string = "";
   name: string = "Player ";
   balance: number = 0;
   sithere: string = "";//"sit here";

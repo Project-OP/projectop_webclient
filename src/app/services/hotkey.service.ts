@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { HostListener, Inject, Injectable } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
@@ -20,6 +20,7 @@ export class HotkeyService {
   constructor(private eventManager: EventManager,
     @Inject(DOCUMENT) private document: Document) { 
   }
+
 
   addShortcut(options: Partial<Options>, keydown = false) {
     const merged = { ...this.defaults, ...options };

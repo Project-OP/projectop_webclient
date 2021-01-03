@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-messagewindow',
@@ -7,9 +7,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagewindowComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  msg: string;
 
-  ngOnInit(): void {
+  @Input()
+  set msgnum(n: number){
+    if (!this.msg){
+      return;
+    }
+    if (n > this._msgnum){
+      this._msgnum = n;
+
+      if (this.msgs.length > 30){
+        this.msgs.shift();
+      }
+      this.msgs.push(this.msg);
+    }
+    
   }
 
+  @ViewChild('scroll') private scrollable: ElementRef;
+
+
+  _msgnum: number = -1;
+  msgs: string[] = [];
+  
+  constructor() { }
+
+
+  ngOnInit() { 
+      this.scrollToBottom();
+  }
+
+  ngAfterViewChecked() {        
+      this.scrollToBottom();        
+  } 
+
+  scrollToBottom(): void {
+      try {
+          this.scrollable.nativeElement.scrollTop = this.scrollable.nativeElement.scrollHeight;
+      } catch(err) { }        
+  }  
+
+ 
 }

@@ -38,16 +38,16 @@
 }
 #outer{
   
-  padding: 5px;
+  padding: 10px;
   border-radius: 10px;
 }
 
 #outer.turn{
-  background-color: rgba(255, 0, 0, 0.41);
+  background-color: rgba(57, 255, 31, 0.41);
   
 }
 #outer.winner{
-  background-color: rgba(0, 255, 0, 0.41);
+  background-color: rgba(175, 157, 0, 0.678);
   
 }
 .sitheresitout{
