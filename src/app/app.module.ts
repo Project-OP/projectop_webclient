@@ -17,6 +17,7 @@ import { LobbyComponent } from './pages/lobby/lobby.component';
 import { MsgdialogComponent } from './components/msgdialog/msgdialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuComponent } from './components/menu/menu.component';
+import { ConnectionissuesComponent } from './components/connectionissues/connectionissues.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { MenuComponent } from './components/menu/menu.component';
     DealerbuttonComponent,
     LobbyComponent,
     MsgdialogComponent,
-    MenuComponent
+    MenuComponent,
+    ConnectionissuesComponent
   ],
   imports: [
     BrowserModule,

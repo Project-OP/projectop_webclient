@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { Observer } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ClientapiService } from './clientapi.service';
@@ -17,13 +18,25 @@ export class PingpongService {
   public wsMessages = new Observable((observer: Observer<string>)=>{
     this.wsMessageObserver = observer;
   });
+
+  public _wsConnection: Subject<number>;
+
+  get wsConnection(){
+    if (!this._wsConnection){
+      this._wsConnection = new Subject();
+    }
+    return this._wsConnection;
+  }
     
 
   onopen(){
     console.log("ws connected");
-
+    this._wsConnection.next(WebSocket.OPEN);
+    
   }
   onclose(){
+    this._wsConnection.next(WebSocket.CLOSED);
+    
     console.log("disconnected from ws, reconnecting in 30s");
     this.fallbackPolling();
     setTimeout(()=>{
@@ -37,14 +50,15 @@ export class PingpongService {
       this.api.Refresh();
     }
     
-    this.wsMessageObserver.next(e);
+    this.wsMessageObserver?.next(e);
   } 
-
+ 
   onerror(){
     console.log("ws error"); 
   }
 
   public Connect(){
+    
     const i = window.location.origin.includes("localhost");
     console.log(i);
     if (i){

@@ -1,0 +1,26 @@
+div{
+
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+    width: 240px;
+    height: 220px;
+    font-size: 16px;
+    background-color: rgba(255, 0, 0, 0.24);
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 16px;
+    border-radius: 7px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid red;
+    border-right: none;
+    border-top: none;
+}
+
+p{
+    margin-bottom: 9px;
+}
