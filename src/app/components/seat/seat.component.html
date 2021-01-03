@@ -1,5 +1,5 @@
 <div id="outer" [ngClass]="{'winner':playerWon,'turn':playerTurn && !playerWon && Player.you,'oturn':playerTurn && !playerWon && !Player.you}" >
-    {{sitout}}
+    
     <button (click)="sitbtn()" *ngIf="(sithere == 'sit here' && !playerIsSitting && Player.empty) || (sitout && Player.you ) " class="sitheresitout">{{sithere}}</button>
     <div *ngIf="!Player.empty" >
         
