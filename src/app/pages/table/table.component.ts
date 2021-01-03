@@ -64,7 +64,6 @@ export class TableComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private router: Router,
-    private hotkeys: HotkeyService,
     private ws: PingpongService
     ) 
     {
@@ -294,131 +293,7 @@ export class TableComponent implements OnInit {
               
       }
     });
-    
-    
-  
 
-
-
-    // hotkeys
-    this.hotkeys.addShortcut({ keys: 'enter' }).pipe().subscribe(()=>{
-      
-      
-    });
-
-    /*
-    this.hotkeys.addShortcut({ keys: 'space' }).pipe().subscribe(()=>{
-      console.log("check/call");
-      this.hotkeyTurnAction(this.room.table.current_min_bet);
-      
-
-    });
-
-    this.hotkeys.addShortcut({ keys: 'f' }).pipe().subscribe(()=>{
-      this.hotkeyTurnAction(-1,true);
-    });
-
-
-    this.hotkeys.addShortcut({ keys: 'a' }).pipe().subscribe(()=>{
-      console.log("all in");
-      this.hotkeyTurnAction(this.room.seats[this.room.table.egoPos].Balance);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'ArrowUp' },true).pipe().subscribe(()=>{
-      console.log("raise");
-      this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'shift.ArrowUp' },true).pipe().subscribe(()=>{
-      console.log("raise more");
-      this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb*5);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'ArrowDown' },true).pipe().subscribe(()=>{
-      console.log("lower raise");
-      this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'shift.ArrowDown' },true).pipe().subscribe(()=>{
-      console.log("lower raise more");
-      this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb*5);
-
-    });
-
-    this.hotkeys.addShortcut({ keys: 'o' },true).pipe().subscribe(()=>{
-      console.log("sitout");
-      this.turnAction = "sitout";
-      if (this.room.table.player_turn != this.room.table.egoPos){
-        const e = this.room.seats[this.egoPos];
-        const sout = !e.roundturn.join_next_round && (e.roundturn.sitout ||e.roundturn.sitout_next_turn);
-        console.log(!e.roundturn.join_next_round ,e.roundturn.sitout ,e.roundturn.sitout_next_turn);
-        this.api.Sitout(sout);
-      }else{
-        this.hotkeyTurnAction(-1,true,true);
-      }
-      
-
-
-    });
-
-
-    // admin commands
-    
-    this.hotkeys.addShortcut({ keys: 'shift.f' }).pipe().subscribe(()=>{
-      console.log("ADMIN: force fold");
-      this.api.Admin_Fold();
-
-    });
-    
-    this.hotkeys.addShortcut({ keys: 'shift.r' }).pipe().subscribe(()=>{
-      console.log("ADMIN: revoke admin rights");
-      this.api.Admin_Revoke();
-    });
-    this.hotkeys.addShortcut({ keys: 'shift.g' }).pipe().subscribe(()=>{
-      console.log("ADMIN: grant admin rights");
-      this.api.Admin_Promote();
-    });
-    this.hotkeys.addShortcut({ keys: 'shift.k' }).pipe().subscribe(()=>{
-      console.log("ADMIN: kick player");
-      this.api.Admin_Kick();
-    });
-
-    this.hotkeys.addShortcut({ keys: '+' }).pipe().subscribe(()=>{
-      let b = this.ego.balance+10;
-      if (b < 0){
-        b = 0;
-      }
-      this.api.Admin_SetAmount(b);
-    });
-
-    this.hotkeys.addShortcut({ keys: '-' }).pipe().subscribe(()=>{
-      let b = this.ego.balance+-50;
-      if (b < 0){
-        b = 0;
-      }
-      this.api.Admin_SetAmount(b);
-    });
-    this.hotkeys.addShortcut({ keys: 'shift.+' }).pipe().subscribe(()=>{
-      let b = this.ego.balance+50;
-      if (b < 0){
-        b = 0;
-      }
-      this.api.Admin_SetAmount(b);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'shift.-' }).pipe().subscribe(()=>{
-      let b = this.ego.balance-50;
-      if (b < 0){
-        b = 0;
-      }
-      this.api.Admin_SetAmount(b);
-    });
-
-    this.hotkeys.addShortcut({ keys: 'n' }).pipe().subscribe(()=>{
-      this.api.NotifyTurn();
-    });
-    
-    */    
   }
 
   private hotkeyTurnAction(value: number = -1, fold=false, sitout=false){

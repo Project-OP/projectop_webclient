@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ClientapiService } from 'src/app/services/clientapi.service';
 import { HotkeyService } from 'src/app/services/hotkey.service';
 
@@ -13,14 +13,25 @@ export class TurnactionsComponent implements OnInit {
 
   constructor(private hotkeys: HotkeyService, private api: ClientapiService) {}
 
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardUpEvent(event: KeyboardEvent) {
+      
+
+      let shift = "";
+      if (event.shiftKey){
+        shift = "shift.";
+      }
+      let n = shift+event.key;
+      switch(n){
+          case "h":
+            this.visible = !this.visible;
+          break;
+
+      }
+
+    }
   ngOnInit() {
-    
-    
-    this.hotkeys.addShortcut({ keys: 'h' }).pipe().subscribe(()=>{
-      this.visible = !this.visible;
-    });
-
-
+  
   }
 
 }
