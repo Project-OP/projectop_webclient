@@ -374,7 +374,7 @@ export class TableComponent implements OnInit {
         if (this.room.id != "" &&  this.room.table.egoPos == -1){
           this.api.Refresh();  
         }
-        if (this.room.table.egoPos > -1){
+        if (this.room.table.egoPos > -1 && this.room.table.active){
           console.log("check done");
           return;
         }
