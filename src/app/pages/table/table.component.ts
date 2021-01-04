@@ -56,7 +56,7 @@ export class TableComponent implements OnInit {
     return `scale(${this._zoom})`;
   } 
 
-  private  admintransform = "";
+  public  admintransform = "";
 
 
   public seatcount = 8;
@@ -417,12 +417,12 @@ export class TableComponent implements OnInit {
     const h = document.body.clientHeight / 800;
     this._zoom = Math.min(w,h);
 
-    this.admintransform =`scale(${this._zoom}) translateX(-50%)`;
-    if (this.applyView){
-//      console.log(this.admin);
-
+    if (!this.viewportscaling){
+      this.admintransform = "translateX(-50%)";  
+      return;
     }
-    
+    this.admintransform =`scale(${this._zoom}) translateX(-50%)`;
+
     
   }
 
