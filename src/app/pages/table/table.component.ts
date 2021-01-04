@@ -3,6 +3,7 @@ import { Component, ElementRef, HostListener, Inject, OnInit, QueryList, ViewChi
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rx';
 import { Subscription } from 'rxjs';
+import { AdminwindowComponent } from 'src/app/components/adminwindow/adminwindow.component';
 import { CommunitycardsComponent } from 'src/app/components/communitycards/communitycards.component';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
 
@@ -31,6 +32,8 @@ export class TableComponent implements OnInit {
   private turnValue = 0;
   private ws_subscription: Subscription;
 
+  private viewportscaling = false;
+
   @ViewChild('msgbox') 
   msgbox: MsgdialogComponent; 
 
@@ -40,7 +43,21 @@ export class TableComponent implements OnInit {
   @ViewChild('cards') 
   cards: CommunitycardsComponent; 
 
-  
+  @ViewChild('admin') 
+  admin: AdminwindowComponent;
+
+  private applyView = true;
+
+  private _zoom = 1;
+  public get zoom(): string{
+    if (!this.viewportscaling){
+      return "";
+    }
+    return `scale(${this._zoom})`;
+  } 
+
+  private  admintransform = "";
+
 
   public seatcount = 8;
 
@@ -229,7 +246,12 @@ export class TableComponent implements OnInit {
           this.api.Admin_SetAmount(b);
         break;
 
+        case  "v":
+          this.viewportscaling = !this.viewportscaling;
+          this.onResize("");
+        break
 
+        
 
       }
     
@@ -363,6 +385,10 @@ export class TableComponent implements OnInit {
     const table_dom = this.table.nativeElement;
     //console.log(table_dom.offsetWidth, table_dom.offsetHeight );
     this.checkPeriodically();
+
+    this.applyView = true;
+
+    this.onResize("");
     
 
   }
@@ -386,7 +412,17 @@ export class TableComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: string) {
-    const table_dom = this.table.nativeElement;
+    //const table_dom = this.table.nativeElement;
+    const w = document.body.clientWidth / 1200;
+    const h = document.body.clientHeight / 800;
+    this._zoom = Math.min(w,h);
+
+    this.admintransform =`scale(${this._zoom}) translateX(-50%)`;
+    if (this.applyView){
+//      console.log(this.admin);
+
+    }
+    
     
   }
 

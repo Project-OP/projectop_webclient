@@ -20,6 +20,8 @@ export class ConnectionissuesComponent implements OnInit {
 
   visible = true;
 
+  debug = false;
+
   @HostListener('document:keyup', ['$event'])
   handleKeyboardUpEvent(event: KeyboardEvent) {
     if (this.visible){

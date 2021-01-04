@@ -1,12 +1,9 @@
 ul{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
+
     display: flex;
     align-items: stretch; /* Default */
     justify-content: center;
-    width: 100%;
+    width: 940px;
     margin: 0;
     padding: 0;
     border-radius: 10px;

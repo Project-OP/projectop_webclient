@@ -1,8 +1,6 @@
 #msg{
     display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
+    
     border: 1px solid gray;
     padding: 10px;
     border-radius: 5px;
@@ -13,6 +11,7 @@
     height: 200px;
     background-color: #0000008c;
     overflow-y: scroll;
+    transform-origin:top right;
 }
 #msg p{
     color: rgba(255, 255, 255, 0.603);

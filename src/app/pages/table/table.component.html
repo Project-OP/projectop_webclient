@@ -1,5 +1,7 @@
-<app-msgdialog #msgbox></app-msgdialog>
+<app-adminwindow [style.transform]="admintransform" [room]="room" #admin></app-adminwindow>
 
+<app-msgdialog #msgbox></app-msgdialog>
+<div id="zoom" [style.transform]="zoom">
 <div id="area" class="centerhv" >
     <app-dealerbutton [dealer]="room.table.dealerpos"></app-dealerbutton>
     <img id="table" #table alt="table"  src="/assets/img/table.png" />
@@ -11,9 +13,8 @@
     
     
 </div>
-
-<app-turnactions></app-turnactions>
-<app-messagewindow  [msgnum]="room.msg_cnt" [msg]="room.msg"></app-messagewindow>
-<app-adminwindow [room]="room"></app-adminwindow>
-<app-menu #menu></app-menu>
-<app-connectionissues></app-connectionissues>
+</div>
+<app-turnactions [style.transform]="zoom"></app-turnactions>
+<app-messagewindow [style.transform]="zoom" [msgnum]="room.msg_cnt" [msg]="room.msg"></app-messagewindow>
+<app-menu [style.transform]="zoom" #menu></app-menu>
+<app-connectionissues [style.transform]="zoom"></app-connectionissues>

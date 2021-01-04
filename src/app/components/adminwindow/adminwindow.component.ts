@@ -17,6 +17,8 @@ export class AdminwindowComponent implements OnInit {
     this.visible = r?.seats[r?.table?.egoPos]?.admin;
   }
   
+
+
   visible = false;
   constructor() { }
 
