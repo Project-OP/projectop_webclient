@@ -116,16 +116,23 @@ export class TableComponent implements OnInit {
     switch(n){
       case "ArrowUp":
         this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb);
+        event.preventDefault();
+
       break;
       case "shift.ArrowUp":
         this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb*5);
+        event.preventDefault();
+
       break;
 
       case "ArrowDown":
         this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb);
+        event.preventDefault();
+
       break;
       case "shift.ArrowDown":
         this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb*5);
+        event.preventDefault();
       break;
     }
   }
