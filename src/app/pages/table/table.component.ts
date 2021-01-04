@@ -153,7 +153,7 @@ export class TableComponent implements OnInit {
         break;
         
         case " ":
-          this.hotkeyTurnAction(this.room.table.current_min_bet);
+          this.hotkeyTurnAction(this.callValue);
         break;
 
         case "n":
