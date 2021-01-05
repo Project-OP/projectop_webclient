@@ -10,11 +10,16 @@ import { ClientapiService } from './clientapi.service';
 })
 export class PingpongService {
 
-  constructor(private api: ClientapiService, private router: Router) { }
+  constructor(private api: ClientapiService, private router: Router) {
+    this.checkPongPeriodically();
+
+  }
   ws: WebSocket;
 
   fallback = false;
+  connectionOnceEstablished = false;
 
+  private lastPongRecv = 0;
   public _wsMessages: Subject<string>;
 
   get wsMessages(){
@@ -23,6 +28,7 @@ export class PingpongService {
     }
     return this._wsMessages;
   }
+  
   
 
 
@@ -35,10 +41,31 @@ export class PingpongService {
   }
     
 
+  private checkPongPeriodically(){
+
+    // we do this if the connection was once established
+    if (this.connectionOnceEstablished){
+      const lastPongUpdate = Date.now() - this.lastPongRecv; //ms
+      if (lastPongUpdate > 30000){
+        console.log("pong not recv since 30s or more.., closing and reconnecting");
+        // if we did not get any update for 30s, our connection is lost
+        // we may be aware of this, if the socket is closed, so we check the socket for open, if so, it is not!, we kill the connection and reconnect
+        if (this.ws.readyState == WebSocket.OPEN){
+          this.ws.close();
+        }
+      }
+
+    }
+
+    setTimeout(()=>{
+      this.checkPongPeriodically();
+    },10000);
+  }
+
   onopen(){
     console.log("ws connected");
     this._wsConnection.next(WebSocket.OPEN);
-    
+    this.connectionOnceEstablished = true;
   }
   onclose(){
     this._wsConnection.next(WebSocket.CLOSED);
@@ -46,7 +73,6 @@ export class PingpongService {
     console.log("disconnected from ws, reconnecting in 30s");
     this.fallbackPolling();
     setTimeout(()=>{
-
       console.log("reconnecting to ws...");
       this.Connect();
     },30000);
@@ -54,6 +80,9 @@ export class PingpongService {
   onmessage(e: string){
     if (e == "Update"){
       this.api.Refresh();
+    }
+    if (e == "pong"){
+      this.lastPongRecv = Date.now();
     }
     
     this.wsMessages?.next(e);
@@ -82,17 +111,22 @@ export class PingpongService {
     this.ws.onclose = () => {this.onclose();};
     this.ws.onerror = () =>  {this.onerror();};
     
-    this.sendPing();
+    if (!this.connectionOnceEstablished){
+      // we call this only once because it calls itself recursively on timeout, which never stops
+      this.sendPing();
+    }
   }
 
   sendPing(){
     if(this.ws.readyState == WebSocket.OPEN){
       this.ws.send("ping");
+      
+
     }
+    
     setTimeout(()=>{
       this.sendPing();
     },5000);
-  
   }
 
   fallbackPolling(){
