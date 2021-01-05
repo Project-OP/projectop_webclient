@@ -93,16 +93,20 @@ export class PingpongService {
   }
 
   public Connect(){
-    
+    console.log("ORIGIN",);
     const i = window.location.origin.includes("localhost");
     console.log(i);
-    if (i){
-      
-      this.ws = new WebSocket("ws://localhost:3000/heartbeat");
-
-    }else{
-      this.ws = new WebSocket("wss://projectop.philipphock.rocks/heartbeat");
+    let wsp = "ws";
+    if (window.location.protocol.includes("s")){
+      wsp+="s";
     }
+    let port = "";
+    if (window.location.port != "" && window.location.port != "443" && window.location.port != "80"){
+      port = ":3000";
+    }
+
+    this.ws = new WebSocket(`${wsp}://${window.location.hostname}${port}/heartbeat`);
+    
     //
     console.log("ws connecting to",this.ws.url);
     
