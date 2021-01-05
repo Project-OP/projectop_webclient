@@ -174,23 +174,33 @@ export class TableComponent implements OnInit {
             this.api.Turn(v);
             this.turnValue = 0;
             this.turnAction = "";
+            event.preventDefault();
+
         break;
         
         case " ":
           this.hotkeyTurnAction(this.callValue);
+          event.preventDefault();
+
         break;
 
         case "n":
           console.log("notify turn");
           this.api.NotifyTurn();
+          event.preventDefault();
+
         break;
 
         case "f":
           this.hotkeyTurnAction(-1,true);
+          event.preventDefault();
+
         break;
 
         case "a":
           this.hotkeyTurnAction(this.room.seats[this.room.table.egoPos].Balance);
+          event.preventDefault();
+
         break;
 
         case "o":
@@ -203,22 +213,33 @@ export class TableComponent implements OnInit {
           }else{
             this.hotkeyTurnAction(-1,true,true);
           }
+          event.preventDefault();
+
         break;
 
         case "shift.F":
           this.api.Admin_Fold();
+          event.preventDefault();
+
         break;
 
         case "shift.R":
           this.api.Admin_Revoke();
+          event.preventDefault();
+          
+
         break;
 
         case "shift.G":
           this.api.Admin_Promote();
+          event.preventDefault();
+
         break;
 
         case "shift.K":
           this.api.Admin_Kick();
+          event.preventDefault();
+
         break;
 
         case "+":
@@ -227,6 +248,8 @@ export class TableComponent implements OnInit {
             b = 0;
           }
           this.api.Admin_SetAmount(b);
+          event.preventDefault();
+
         break;
 
         case "-":
@@ -235,6 +258,8 @@ export class TableComponent implements OnInit {
             b = 0;
           }
           this.api.Admin_SetAmount(b);
+          event.preventDefault();
+
         break;
 
         case "shift.+":
@@ -243,6 +268,8 @@ export class TableComponent implements OnInit {
             b = 0;
           }
           this.api.Admin_SetAmount(b);
+          event.preventDefault();
+
         break;
 
         case "shift.-":
@@ -251,11 +278,15 @@ export class TableComponent implements OnInit {
             b = 0;
           }
           this.api.Admin_SetAmount(b);
+          event.preventDefault();
+
         break;
 
         case  "v":
           this.viewportscaling = !this.viewportscaling;
           this.onResize("");
+          event.preventDefault();
+
         break
 
         
