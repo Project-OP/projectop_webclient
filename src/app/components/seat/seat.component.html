@@ -1,6 +1,6 @@
 <div #cardsanim id="outer" [ngClass]="{'winner':playerWon,'turn':playerTurn && !playerWon && Player.you,'oturn':playerTurn && !playerWon && !Player.you}" >
     
-    <button (click)="sitbtn()" *ngIf="(sithere == 'sit here' && !playerIsSitting && Player.empty) || (sitout && Player.you ) " class="sitheresitout">{{sithere}}</button>
+    <button (click)="sitbtn()" *ngIf="(sithere == 'sit here' && !playerIsSitting && Player.empty) || (sitout && Player.you && (Player.Balance > 0) ) " class="sitheresitout">{{sithere}}</button>
     <div *ngIf="!Player.empty" >
         
         <div  id="cards" *ngIf="Player.Cards.length > 0">
