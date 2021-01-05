@@ -510,8 +510,8 @@ export class TableComponent implements OnInit {
         }
         const component = seat_components[pos];
         seat_components[pos].playerIsSitting = playerIsSitting;
-        if (winners){
-          const sIsInWinner = winners.includes(pos);
+        if (winners && winners.length > 0){
+          const sIsInWinner = winners.map(v=>v.seat).includes(pos);
           component.playerWon = sIsInWinner;
         }
         

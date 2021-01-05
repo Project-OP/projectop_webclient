@@ -36,7 +36,8 @@ export class Table{
 
     // winner, amount
     winner_pots: Winner_Client[] = [];
-    winner_pos: number[] = [];
+    //winner_pos: number[] = [];
+    winner_pos: Array<{seat:number, amount: number}>;
 
     is_headsup = false; 
 
