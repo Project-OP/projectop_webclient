@@ -115,6 +115,9 @@ export class TableComponent implements OnInit {
     let n = shift+event.key;
     switch(n){
       case "ArrowUp":
+              
+        
+
         this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb);
         event.preventDefault();
 
@@ -362,10 +365,12 @@ export class TableComponent implements OnInit {
     if (this.egoPos < 0 || this.room.table.player_turn != this.egoPos){
       return;
     }
-
+    /* this fix was actually an error, if we are the sb (eg = 1), we can only raise by uneven numbers to make the total bet even!
+    console.log(this.room.table, this.callValue);
     if (value < this.room.seats[this.room.table.egoPos].Balance && value > this.room.table.current_min_bet){
       value = value - (value % this.room.table.current_bb);
     }
+    */
     if (value < this.callValue){
       value = this.callValue;
     }
@@ -373,6 +378,8 @@ export class TableComponent implements OnInit {
     if (value > this.room.seats[this.room.table.egoPos].Balance){
       value = this.room.seats[this.room.table.egoPos].Balance;
     }
+
+
 
     if (value == this.callValue){
       this.turnAction = "call";
@@ -388,7 +395,7 @@ export class TableComponent implements OnInit {
       this.turnAction = "all in";
     }
 
-
+    
 
     if (fold){
 
@@ -481,7 +488,8 @@ export class TableComponent implements OnInit {
     
     if (egoPos != -1){
       this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
-      this.callValue = Math.max(this.callValue, 0);
+
+      this.callValue = Math.max(this.callValue, 0); // at least 0
     }
     
     
