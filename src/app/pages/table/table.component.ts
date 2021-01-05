@@ -139,7 +139,7 @@ export class TableComponent implements OnInit {
   
   @HostListener('document:keyup', ['$event'])
   handleKeyboardUpEvent(event: KeyboardEvent) {
-      
+      let b;
 
       let shift = "";
       if (event.shiftKey){
@@ -222,7 +222,7 @@ export class TableComponent implements OnInit {
         break;
 
         case "+":
-          let b = this.ego.balance+10;
+          b = this.ego.balance+10;
           if (b < 0){
             b = 0;
           }
