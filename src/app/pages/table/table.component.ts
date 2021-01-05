@@ -143,7 +143,7 @@ export class TableComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   handleKeyboardUpEvent(event: KeyboardEvent) {
       let b;
-
+      let newBB;
       let shift = "";
       if (event.shiftKey){
         shift = "shift.";
@@ -266,21 +266,21 @@ export class TableComponent implements OnInit {
         break;
 
         case "shift.+":
-          b = this.ego.balance+50;
-          if (b < 0){
-            b = 0;
+          newBB = Number.parseInt(""+this.room.table.nextBBlind) + 2;
+          if (newBB < 2){
+            newBB = 2;
           }
-          this.api.Admin_SetAmount(b);
+          this.api.Admin_SetBB(newBB);
           event.preventDefault();
 
         break;
 
         case "shift.-":
-          b = this.ego.balance-50;
-          if (b < 0){
-            b = 0;
+          newBB = Number.parseInt(""+this.room.table.nextBBlind) - 2;
+          if (newBB < 2){
+            newBB = 2;
           }
-          this.api.Admin_SetAmount(b);
+          this.api.Admin_SetBB(newBB);
           event.preventDefault();
 
         break;

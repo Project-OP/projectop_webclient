@@ -133,6 +133,18 @@ export class ClientapiService {
   
   */
   
+ public async Admin_SetBB(nextBB: number): Promise<Room_Client |ClientError>{
+  try{
+    const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/nextbb/${nextBB}`, {responseType:'json'}).toPromise();
+    this.room = e;
+    this.OnRoomData.emit("next bb");
+    return e;
+  }catch(er){
+    const ret = this.toJsonError(er);
+    this.OnApiError.emit(ret);
+    return ret;
+  }
+}
   public async Admin_Fold(): Promise<Room_Client |ClientError>{
     try{
       const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/admin/fold`, {responseType:'json'}).toPromise();
