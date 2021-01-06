@@ -33,7 +33,7 @@ export class TableComponent implements OnInit {
   private turnValue = 0;
   private ws_subscription: Subscription;
 
-  private viewportscaling = false;
+  private viewportscaling = true;
 
   @ViewChild('msgbox') 
   msgbox: MsgdialogComponent; 
