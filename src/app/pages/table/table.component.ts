@@ -47,6 +47,8 @@ export class TableComponent implements OnInit {
   @ViewChild('admin') 
   admin: AdminwindowComponent;
 
+  private nudgeAudio = new Audio();
+  
   private applyView = true;
 
   private _zoom = 1;
@@ -86,6 +88,9 @@ export class TableComponent implements OnInit {
     private ws: PingpongService
     ) 
     {
+      this.nudgeAudio.src = "/assets/snd/notify.mp3";
+      this.nudgeAudio.load();
+    
       const seats_init: Array<Player_Client> = [];
       for (let i = 0; i < 8; i++){
         seats_init.push(Player_Client.Empty());
@@ -349,15 +354,20 @@ export class TableComponent implements OnInit {
     
     this.ws_subscription = this.ws.wsMessages.subscribe((o: WSJsonMsg)=>{
       if (o.type == WSType.NUDGE.code){
-
+       
         const num = Number.parseInt(o.body);    
+        
+        
         this.seats_elem.toArray()[num].nudge = true;
     
         setTimeout(()=>{
       
             this.seats_elem.toArray()[num].nudge = false;
         },300);
-              
+        if (this.egoPos == num){
+          this.nudgeAudio.play();
+        }
+      
       }
     });
 
