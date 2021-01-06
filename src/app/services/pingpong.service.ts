@@ -50,16 +50,16 @@ export class PingpongService {
 
     // we do this if the connection was once established
     if (this.connectionOnceEstablished){
-      this.connectionOnceEstablished = false;
       const lastPongUpdate = Date.now() - this.lastPongRecv; //ms
-      if (lastPongUpdate > 5000){
+      if (lastPongUpdate > 5e3 && this.rws.readyState == WebSocket.OPEN){
+
+        this.connectionOnceEstablished = false;
+  
         console.log("pong not recv since 5s or more.., closing and reconnecting");
         // if we did not get any update for 30s, our connection is lost
         // we may be aware of this, if the socket is closed, so we check the socket for open, if so, it is not!, we kill the connection and reconnect
-        if (this.rws.readyState == WebSocket.OPEN){
-          this.rws.close();
-          this.rws.reconnect();
-        }
+        this.rws.reconnect();
+        
       }
 
     }
