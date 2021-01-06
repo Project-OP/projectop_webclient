@@ -357,7 +357,9 @@ export class TableComponent implements OnInit {
        
         const num = Number.parseInt(o.body);    
         
-        
+        if (num < 0){
+          return;
+        }
         this.seats_elem.toArray()[num].nudge = true;
     
         setTimeout(()=>{
