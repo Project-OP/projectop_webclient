@@ -4,7 +4,7 @@ export class Card_Client{
     public color: string;
     public value: string;
     public visible: boolean;
-
+    public hasWon = false;
     constructor(card: Card){
         this.color = card.color.name;
         this.value = card.value.name;

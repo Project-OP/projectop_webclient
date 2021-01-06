@@ -5,6 +5,11 @@ img{
     
 }
 
+.winner{
+    position: relative;
+    top: -4px;
+    box-shadow: 5px 5px 4px -1px rgba(0,0,0,0.63);
+}
 
 
 

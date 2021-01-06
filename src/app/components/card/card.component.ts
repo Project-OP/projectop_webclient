@@ -10,6 +10,9 @@ export class CardComponent implements OnInit {
 
   private _card: Card_Client;
 
+  get winner(){
+    return this._card?.hasWon;
+  }
   @Input() 
   public hide = false;
 

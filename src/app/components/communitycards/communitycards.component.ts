@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { CardComponent } from '../card/card.component';
 
@@ -9,9 +9,9 @@ import { CardComponent } from '../card/card.component';
 })
 export class CommunitycardsComponent implements OnInit {
 
+  
   @Input()
   cards_data: Card_Client[] = [];
-  //cards: CardComponent[] = [];
 
    constructor() {
     

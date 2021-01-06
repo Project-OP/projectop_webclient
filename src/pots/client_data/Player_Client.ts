@@ -12,6 +12,7 @@ export class Player_Client{
     empty: boolean;
     hand: Hand_Client;
     admin = false;
+    win = 0;
 
     static Empty(){
         return new Player_Client();

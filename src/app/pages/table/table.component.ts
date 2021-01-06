@@ -517,7 +517,6 @@ export class TableComponent implements OnInit {
           const sIsInWinner = winners.map(v=>v.seat).includes(pos);
           component.playerWon = sIsInWinner;
         }
-        
         const sHasTurn = pos == this.room.table.player_turn;
   
         
@@ -533,6 +532,7 @@ export class TableComponent implements OnInit {
         component.room = this.room.id;
 
       }
+
 
       if (!this.dirtyTurn){
         this.hotkeyTurnAction(this.callValue);
