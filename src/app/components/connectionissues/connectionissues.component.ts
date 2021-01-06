@@ -42,10 +42,10 @@ export class ConnectionissuesComponent implements OnInit {
       }
     });
     setTimeout(()=>{
-      if (this.srv.ws.readyState != WebSocket.OPEN || this.srv.ws.readyState != WebSocket.CONNECTING ){
+      if (this.srv.rws.readyState != WebSocket.OPEN || this.srv.rws.readyState != WebSocket.CONNECTING ){
         this.visible = true;
       }
-      if (this.srv.ws.readyState == WebSocket.OPEN  ){
+      if (this.srv.rws.readyState == WebSocket.OPEN  ){
         this.visible = false;
       }
       

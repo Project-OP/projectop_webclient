@@ -17,6 +17,7 @@ import { ClientError } from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';
 import { Player_Client } from 'src/pots/client_data/Player_Client';
 import { Room_Client } from 'src/pots/client_data/Room_Client';
+import { WS, WSJsonMsg, WSType } from 'src/pots/data/WS';
 
 @Component({
   selector: 'app-table',
@@ -346,9 +347,10 @@ export class TableComponent implements OnInit {
 
 
     
-    this.ws_subscription = this.ws.wsMessages.subscribe((o: string)=>{
-      if (o.startsWith("Hey")){
-        const num = Number.parseInt(o.slice(4,5));    
+    this.ws_subscription = this.ws.wsMessages.subscribe((o: WSJsonMsg)=>{
+      if (o.type == WSType.NUDGE.code){
+
+        const num = Number.parseInt(o.body);    
         this.seats_elem.toArray()[num].nudge = true;
     
         setTimeout(()=>{
@@ -451,7 +453,7 @@ export class TableComponent implements OnInit {
         }
         this.checkPeriodically();
       }
-    },5000);
+    },1000);
     
   }
 
@@ -520,7 +522,7 @@ export class TableComponent implements OnInit {
   
         
         component.playerTurn = sHasTurn;
-        console.log("raction",seat.roundturn.round_action);
+        //console.log("raction",seat.roundturn.round_action);
         if (pos != egoPos){
           component.setaction = seat.roundturn.round_action;
         }

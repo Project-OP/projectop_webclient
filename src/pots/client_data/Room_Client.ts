@@ -12,6 +12,8 @@ export class Room_Client{
     seats: Array<Player_Client> = [];
     msg = "";
     msg_cnt = -1;
+    version = 0;
+
     constructor(){
 
 
