@@ -131,3 +131,12 @@ app-messagewindow{
 
     
 }
+
+app-mobileinput{
+    position: absolute;
+    
+    transform-origin:right top;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+}

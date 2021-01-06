@@ -12,12 +12,14 @@ import { SeatComponent } from 'src/app/components/seat/seat.component';
 import { ClientapiService } from 'src/app/services/clientapi.service';
 import { HotkeyService } from 'src/app/services/hotkey.service';
 import { PingpongService } from 'src/app/services/pingpong.service';
+import { UieventService, TurnAction, TurnActionType, SimpleUIEvent } from 'src/app/services/uievent.service';
 import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { ClientError } from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';
 import { Player_Client } from 'src/pots/client_data/Player_Client';
 import { Room_Client } from 'src/pots/client_data/Room_Client';
 import { WS, WSJsonMsg, WSType } from 'src/pots/data/WS';
+import { ErrorInfo } from 'src/pots/ErrorInfo';
 
 @Component({
   selector: 'app-table',
@@ -28,7 +30,6 @@ export class TableComponent implements OnInit {
 
   private ego: SeatComponent;
   private egoPos = -1;
-  private callValue = 0;
   private turnAction = "";
   private turnValue = 0;
   private ws_subscription: Subscription;
@@ -78,14 +79,14 @@ export class TableComponent implements OnInit {
   private onRoomSubscription: Subscription; 
   private onError: Subscription; 
 
-  private dirtyTurn = false;
 
   constructor(
     private api: ClientapiService,
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private router: Router,
-    private ws: PingpongService
+    private ws: PingpongService,
+    private uiEvent: UieventService
     ) 
     {
       this.nudgeAudio.src = "/assets/snd/notify.mp3";
@@ -108,6 +109,27 @@ export class TableComponent implements OnInit {
         
       });
 
+
+
+      this.uiEvent.TurnActionLabelChange.subscribe((s)=>{
+        let v = "";
+        if (this.uiEvent.TurnValue >= 0){
+          v = ""+this.uiEvent.TurnValue;
+        }
+        this.turnAction = s;
+
+        if (this.ego){
+          this.ego.setaction = s+ " "+v;
+        }
+      });
+
+      this.uiEvent.SimpleEvent.subscribe((e)=>{
+        if (e == SimpleUIEvent.TOGGLE_VIEWPORTSCALING){
+          this.viewportscaling = !this.viewportscaling;
+          this.onResize("");
+        }
+      });
+
   
     }
   
@@ -121,30 +143,32 @@ export class TableComponent implements OnInit {
     let n = shift+event.key;
     switch(n){
       case "ArrowUp":
-              
-        
-
-        this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb);
+        this.uiEvent.TurnAction.next(TurnAction.RAISE.amount(1));
         event.preventDefault();
 
       break;
       case "shift.ArrowUp":
-        this.hotkeyTurnAction(this.turnValue += this.room.table.current_bb*5);
+        this.uiEvent.TurnAction.next(TurnAction.RAISE.amount(5));
+        
         event.preventDefault();
 
       break;
 
       case "ArrowDown":
-        this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb);
+        this.uiEvent.TurnAction.next(TurnAction.RAISE.amount(-1));
+        
         event.preventDefault();
 
       break;
       case "shift.ArrowDown":
-        this.hotkeyTurnAction(this.turnValue -= this.room.table.current_bb*5);
+        this.uiEvent.TurnAction.next(TurnAction.RAISE.amount(-5));
+
         event.preventDefault();
       break;
     }
   }
+
+
   
   @HostListener('document:keyup', ['$event'])
   handleKeyboardUpEvent(event: KeyboardEvent) {
@@ -157,145 +181,102 @@ export class TableComponent implements OnInit {
       let n = shift+event.key;
       switch(n){
           case "Enter":
-            const winner = this.room?.table?.winner_pos?.length > 0;
-            const notactive = !this.room.table.active;
-            this.dirtyTurn = false;
-            if (notactive || winner){
 
-            this.api.NewRound();
-              return;
-            }
-            if (this.turnAction == "sit out"){
-            this.api.Sitout(false);
-              return;
-            }
-            if (this.turnAction == ""){
-              this.hotkeyTurnAction(0);
-            }
-            const v = this.turnValue;
-            if (this.room.table.player_turn != this.egoPos){
-              this.ego.setaction = "NOT YOUR TURN";
-                setTimeout(()=>{
-                  this.ego.setaction = "not your turn";
-                },500);
-              return;
-            }
-            this.api.Turn(v);
-            this.turnValue = 0;
-            this.turnAction = "";
+            this.uiEvent.TurnAction.next(TurnAction.SUBMIT);
             event.preventDefault();
 
         break;
         
         case " ":
-          this.hotkeyTurnAction(this.callValue);
+          this.uiEvent.TurnAction.next(TurnAction.CALL);
           event.preventDefault();
 
         break;
 
         case "n":
-          console.log("notify turn");
-          this.api.NotifyTurn();
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.NUDGE);
           event.preventDefault();
 
         break;
 
         case "f":
-          this.hotkeyTurnAction(-1,true);
+          this.uiEvent.TurnAction.next(TurnAction.FOLD);
+
           event.preventDefault();
 
         break;
 
         case "a":
-          this.hotkeyTurnAction(this.room.seats[this.room.table.egoPos].Balance);
+          this.uiEvent.TurnAction.next(TurnAction.ALLIN);
           event.preventDefault();
 
         break;
 
         case "o":
-          this.turnAction = "sitout";
-          if (this.room.table.player_turn != this.room.table.egoPos){
-            const e = this.room.seats[this.egoPos];
-            const sout = !e.roundturn.join_next_round && (e.roundturn.sitout ||e.roundturn.sitout_next_turn);
-            console.log(!e.roundturn.join_next_round ,e.roundturn.sitout ,e.roundturn.sitout_next_turn);
-            this.api.Sitout(sout);
-          }else{
-            this.hotkeyTurnAction(-1,true,true);
-          }
+          this.uiEvent.TurnAction.next(TurnAction.SITOUT);
+          
           event.preventDefault();
 
         break;
 
         case "shift.F":
-          this.api.Admin_Fold();
-          event.preventDefault();
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_FOLD);
+        event.preventDefault();
 
         break;
 
         case "shift.R":
-          this.api.Admin_Revoke();
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_REVOKE);
+
           event.preventDefault();
           
 
         break;
 
         case "shift.G":
-          this.api.Admin_Promote();
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_PROMOTE);
+
           event.preventDefault();
 
         break;
 
         case "shift.K":
-          this.api.Admin_Kick();
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_KICK);
+
           event.preventDefault();
 
         break;
 
         case "+":
-          b = this.ego.balance+10;
-          if (b < 0){
-            b = 0;
-          }
-          this.api.Admin_SetAmount(b);
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_PLUS);
           event.preventDefault();
 
         break;
 
         case "-":
-          b = this.ego.balance-10;
-          if (b < 0){
-            b = 0;
-          }
-          this.api.Admin_SetAmount(b);
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_MINUS);
+
           event.preventDefault();
 
         break;
 
         case "shift.+":
-          newBB = Number.parseInt(""+this.room.table.nextBBlind) + 2;
-          if (newBB < 2){
-            newBB = 2;
-          }
-          this.api.Admin_SetBB(newBB);
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_BLIND_PLUS);
+
           event.preventDefault();
 
         break;
 
         case "shift.-":
-          newBB = Number.parseInt(""+this.room.table.nextBBlind) - 2;
-          if (newBB < 2){
-            newBB = 2;
-          }
-          this.api.Admin_SetBB(newBB);
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_BLIND_MINUS);
+
           event.preventDefault();
 
         break;
 
         case  "v":
-          this.viewportscaling = !this.viewportscaling;
-          this.onResize("");
+          this.uiEvent.SimpleEvent.next(SimpleUIEvent.TOGGLE_VIEWPORTSCALING);
           event.preventDefault();
-
         break
 
         
@@ -310,8 +291,7 @@ export class TableComponent implements OnInit {
 
     this.ws.Connect();
     this.onError = this.api.OnApiError.subscribe((e: ClientError) => {
-      console.log("error",e);
-      this.msgbox.setError(e);
+        this.displayError(e);
     });
 
     this.onRoomSubscription = this.api.OnRoomData.subscribe((s: string) => {
@@ -320,7 +300,6 @@ export class TableComponent implements OnInit {
         return;
       }
       
-      console.log("event: ",s);
       this.room = this.api.room;
       
       this.RenderRoom();
@@ -330,7 +309,7 @@ export class TableComponent implements OnInit {
     if (id == null){
       const r = await this.api.GetMyRoom();
       if (r instanceof ClientError){
-        this.msgbox.setError(r);
+        this.displayError(r);
       }else{
         const rid: MyRoom = r;
         const id = rid.roomid;
@@ -340,13 +319,17 @@ export class TableComponent implements OnInit {
     }else{
       const r = await this.api.Enter(id);
       if (r instanceof ClientError){
-        this.msgbox.setError(r);
+        this.displayError(r);
       }else{
         const room: Room_Client = r;
         this.room = room;
         this.RenderRoom();
 
       }
+
+      this.applyView = true;
+
+      this.onResize("");
       
     }
 
@@ -374,69 +357,16 @@ export class TableComponent implements OnInit {
     });
 
   }
-
-  private hotkeyTurnAction(value: number = -1, fold=false, sitout=false){
-    if (this.egoPos < 0 || this.room.table.player_turn != this.egoPos){
-      return;
-    }
-    /* this fix was actually an error, if we are the sb (eg = 1), we can only raise by uneven numbers to make the total bet even!
-    console.log(this.room.table, this.callValue);
-    if (value < this.room.seats[this.room.table.egoPos].Balance && value > this.room.table.current_min_bet){
-      value = value - (value % this.room.table.current_bb);
-    }
-    */
-    if (value < this.callValue){
-      value = this.callValue;
-    }
-
-    if (value > this.room.seats[this.room.table.egoPos].Balance){
-      value = this.room.seats[this.room.table.egoPos].Balance;
-    }
-
-
-
-    if (value == this.callValue){
-      this.turnAction = "call";
-    }
-    if (value == 0){
-      this.turnAction = "check";
-    }
-    if (value > this.callValue){
-      this.turnAction = "raise";
-    }
-    
-    if (value == this.room.seats[this.room.table.egoPos].Balance){
-      this.turnAction = "all in";
-    }
-
-    
-
-    if (fold){
-
-      value = -1;
-      this.turnAction = "fold";
-    }
-
-    if (sitout){
-      value = -1;
-      this.turnAction = "sit out";
-    }
-    
-    
-    
-    this.turnValue = value;
-    let v = "";
-    if (value >= 0){
-      v = ""+value;
-    }
-
-    if (this.ego){
-      this.ego.setaction = this.turnAction+ " "+v;
-    }
-    
-    
+  /*
+  let v = "";
+  if (value >= 0){
+    v = ""+value;
   }
-
+  // on seat action label change
+  if (this.ego){
+    this.ego.setaction = this.turnAction+ " "+v;
+  }
+*/
   ngAfterViewInit(){
     this.document.body.classList.add('table_background');
     this.document.body.classList.remove('lobby_background');
@@ -445,9 +375,7 @@ export class TableComponent implements OnInit {
     //console.log(table_dom.offsetWidth, table_dom.offsetHeight );
     this.checkPeriodically();
 
-    this.applyView = true;
-
-    this.onResize("");
+ 
     
 
   }
@@ -471,6 +399,9 @@ export class TableComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: string) {
+    if (!this.applyView){
+      return;
+    }
     //const table_dom = this.table.nativeElement;
     const w = document.body.clientWidth / 1200;
     const h = document.body.clientHeight / 800;
@@ -500,11 +431,7 @@ export class TableComponent implements OnInit {
     });
     egoPos = this.egoPos;
     
-    if (egoPos != -1){
-      this.callValue = this.room.table.current_min_bet - this.room.seats[egoPos].roundturn.amount;
-
-      this.callValue = Math.max(this.callValue, 0); // at least 0
-    }
+   
     
     
     const winners = this.room.table.winner_pos;
@@ -546,12 +473,11 @@ export class TableComponent implements OnInit {
       }
 
 
-      if (!this.dirtyTurn){
-        this.hotkeyTurnAction(this.callValue);
+      if (!this.uiEvent.turnActionDirty){
+        this.uiEvent.TurnAction.next(TurnAction.CALL);
       }
       
-
-    
+      
       
     });
 
@@ -560,7 +486,27 @@ export class TableComponent implements OnInit {
 
   }
 
+  private displayError(r: ClientError){
 
+
+    if (ErrorInfo.GetErrorInfo(r) == ErrorInfo.NOT_YOUR_TURN){
+
+      this.ego.setaction = "NOT YOUR TURN";
+      setTimeout(()=>{
+        this.ego.setaction = "not your turn";
+      },500);
+      return;
+
+    }else if(ErrorInfo.GetErrorInfo(r) == ErrorInfo.NOT_ENOUGH_PLAYER){
+      console.log("not enough player");
+      return;
+    }else if (ErrorInfo.GetErrorInfo(r) == ErrorInfo.UNKNOWN){
+      console.log("error",r);
+      return;
+    }else{
+      this.msgbox.setError(r);
+    }
+  }
 
   async ngOnDestroy(): Promise<void>{
     this.ws_subscription.unsubscribe();

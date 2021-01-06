@@ -18,6 +18,7 @@ import { MsgdialogComponent } from './components/msgdialog/msgdialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuComponent } from './components/menu/menu.component';
 import { ConnectionissuesComponent } from './components/connectionissues/connectionissues.component';
+import { MobileinputComponent } from './components/mobileinput/mobileinput.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ConnectionissuesComponent } from './components/connectionissues/connect
     LobbyComponent,
     MsgdialogComponent,
     MenuComponent,
-    ConnectionissuesComponent
+    ConnectionissuesComponent,
+    MobileinputComponent
   ],
   imports: [
     BrowserModule,

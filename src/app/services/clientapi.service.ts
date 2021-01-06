@@ -37,7 +37,7 @@ export class ClientapiService {
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+roomid+"/join/"+name, {responseType:'json'}).toPromise();
       this.room = e;
-      this.OnRoomData.emit("sit");
+      this.OnRoomData.emit("join");
 
       return e;
     }catch(er){
@@ -51,7 +51,7 @@ export class ClientapiService {
     try{
       const e = await this.http.get<Room_Client>("/game/id/"+this.room.id+"/startgame", {responseType:'json'}).toPromise();
       this.room = e;
-      this.OnRoomData.emit("sit");
+      this.OnRoomData.emit("start");
 
       return e;
     }catch(er){
@@ -112,6 +112,9 @@ export class ClientapiService {
 
   public async Refresh(): Promise<Room_Client |ClientError>{
     try{
+      if (this.room?.id?.length == 0){
+        return this.room;
+      }
       const e = await this.http.get<Room_Client>(`/game/id/${this.room.id}/refresh`, {responseType:'json'}).toPromise();
       this.room = e;
       this.OnRoomData.emit("update");
@@ -281,6 +284,7 @@ export class ClientapiService {
     const apierror: ClientError = er.error;
     return new ClientError(apierror.error, apierror.reason);
   }else{
+    
     console.log("unknow error",er);
     return new ClientError("unknow error",er.error);
   }

@@ -52,7 +52,7 @@ export class LobbyComponent implements OnInit {
   ngAfterViewInit(){
     this.document.body.classList.remove('table_background');
     this.document.body.classList.add('lobby_background');
-    console.log("version: 5121001");
+    console.log("version: 6121001");
   }
 
 

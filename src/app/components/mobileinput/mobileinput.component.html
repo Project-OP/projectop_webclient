@@ -1,0 +1,24 @@
+<!--
+<div id="onswitch">
+    <span class="checkbox">
+    <input type="checkbox">
+    <label data-on="✔" data-off="✘"></label>
+    </span>
+</div>
+-->
+<ul id="control">
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="submit()" id="bet">{{sublbl}}</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="raise()" id="raise">&#8593;</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="lower()" id="lower">&#8595;</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="fold()" id="fold">fold</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="allin()" id="allin">all in</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="nudge()" id="nudge">nudge</button></li>
+    <li><button *ngIf="visible" class="ctrlbtn" (click)="scaling()" id="scaling">scaling</button></li>
+    <li>
+        <span class="checkbox">
+        <input (ngModelChange)="onVisibleChange()" [(ngModel)]="visible" type="checkbox">
+        <label data-on="✔" data-off="✘"></label>
+        </span>
+    </li>
+    
+</ul>
