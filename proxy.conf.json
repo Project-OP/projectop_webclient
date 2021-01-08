@@ -5,6 +5,12 @@
       "logLevel": "debug",
       "changeOrigin": true
     },
+    "/version/": {
+      "target": "http://localhost:3000",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+    },
     "/heartbeat": {
       "target": "ws://localhost:3000",
       "secure": false,

@@ -7,6 +7,7 @@ import { ClientapiService } from 'src/app/services/clientapi.service';
 import { ClientError } from 'src/pots/client_data/ClientError';
 import { New_Room_Resp } from 'src/pots/client_data/New_Room_Resp';
 import { Room_Client } from 'src/pots/client_data/Room_Client';
+import { version } from '../../../../package.json';
 
 @Component({
   selector: 'app-lobby',
@@ -49,10 +50,13 @@ export class LobbyComponent implements OnInit {
       this.join = x == "join";
     })
   }
-  ngAfterViewInit(){
+  async ngAfterViewInit(){
     this.document.body.classList.remove('table_background');
     this.document.body.classList.add('lobby_background');
-    console.log("version: 6121001");
+    const server_ver = await this.api.Version();
+    console.log(`client version: ${version}`);
+    console.log(`server version: ${server_ver}`);
+
   }
 
 

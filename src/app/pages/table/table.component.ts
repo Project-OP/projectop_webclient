@@ -1,18 +1,15 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rx';
 import { Subscription } from 'rxjs';
 import { AdminwindowComponent } from 'src/app/components/adminwindow/adminwindow.component';
 import { CommunitycardsComponent } from 'src/app/components/communitycards/communitycards.component';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
-
 import { MsgdialogComponent } from 'src/app/components/msgdialog/msgdialog.component';
 import { SeatComponent } from 'src/app/components/seat/seat.component';
 import { ClientapiService } from 'src/app/services/clientapi.service';
-import { HotkeyService } from 'src/app/services/hotkey.service';
 import { PingpongService } from 'src/app/services/pingpong.service';
-import { UieventService, TurnAction, TurnActionType, SimpleUIEvent } from 'src/app/services/uievent.service';
+import { UieventService, TurnAction, SimpleUIEvent } from 'src/app/services/uievent.service';
 import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { ClientError } from 'src/pots/client_data/ClientError';
 import { MyRoom } from 'src/pots/client_data/MyRoom';

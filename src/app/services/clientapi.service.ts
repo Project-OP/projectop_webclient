@@ -21,6 +21,11 @@ export class ClientapiService {
 
    }
 
+  public async Version(): Promise<string>{
+    const e = await this.http.get("/version/", {responseType: 'text'}).toPromise();
+    
+    return e;
+  }
 
   
   public async NewGame(name: string): Promise<New_Room_Resp |ClientError >{
