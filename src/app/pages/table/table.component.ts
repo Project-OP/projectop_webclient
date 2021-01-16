@@ -109,7 +109,6 @@ export class TableComponent implements OnInit {
 
       this.api.OnRoomData.subscribe((s: string)=>{
         const reveal = this.api?.room?.table?.winner_pos?.length > 0;
-        console.log(this.api?.room?.table?.winner_pos?.length);
         if (reveal){
           this.revealCardsAvailable = true;
         }else{
