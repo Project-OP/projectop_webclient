@@ -10,7 +10,10 @@ ul{
     
 }
 
+a:link, a:visited{
+    color: white;
 
+}
 li {
     display: block;
     flex: 0 1 auto; /* Default */

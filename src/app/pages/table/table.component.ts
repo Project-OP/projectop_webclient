@@ -60,6 +60,7 @@ export class TableComponent implements OnInit {
   public  admintransform = "";
 
 
+  private revealCardsAvailable = false;
   public seatcount = 8;
 
   @ViewChildren('seats') 
@@ -104,6 +105,16 @@ export class TableComponent implements OnInit {
         c.Name = "Player "+i;
         v.player = c;
         
+      });
+
+      this.api.OnRoomData.subscribe((s: string)=>{
+        const reveal = this.api?.room?.table?.winner_pos?.length > 0;
+        console.log(this.api?.room?.table?.winner_pos?.length);
+        if (reveal){
+          this.revealCardsAvailable = true;
+        }else{
+          this.revealCardsAvailable = false;
+        }
       });
 
 
@@ -196,6 +207,14 @@ export class TableComponent implements OnInit {
 
         break;
 
+        case "r":
+          if (this.revealCardsAvailable){
+            this.uiEvent.SimpleEvent.next(SimpleUIEvent.SHOW_CARDS);
+          }
+          event.preventDefault();
+
+        break;
+
         case "f":
           this.uiEvent.TurnAction.next(TurnAction.FOLD);
 
@@ -217,13 +236,13 @@ export class TableComponent implements OnInit {
         break;
 
         case "shift.F":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_FOLD);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_FOLD);
         event.preventDefault();
 
         break;
 
         case "shift.R":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_REVOKE);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_REVOKE);
 
           event.preventDefault();
           
@@ -231,41 +250,41 @@ export class TableComponent implements OnInit {
         break;
 
         case "shift.G":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_PROMOTE);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_PROMOTE);
 
           event.preventDefault();
 
         break;
 
         case "shift.K":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_KICK);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_KICK);
 
           event.preventDefault();
 
         break;
 
         case "+":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_PLUS);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_PLUS);
           event.preventDefault();
 
         break;
 
         case "-":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_MINUS);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_MINUS);
 
           event.preventDefault();
 
         break;
 
         case "shift.+":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_BLIND_PLUS);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_BLIND_PLUS);
 
           event.preventDefault();
 
         break;
 
         case "shift.-":
-          this.uiEvent.SimpleEvent.next(SimpleUIEvent.ADMIN_BLIND_MINUS);
+          this.uiEvent.AdminAction.next(SimpleUIEvent.ADMIN_BLIND_MINUS);
 
           event.preventDefault();
 
@@ -405,10 +424,10 @@ export class TableComponent implements OnInit {
     this._zoom = Math.min(w,h);
 
     if (!this.viewportscaling){
-      this.admintransform = "translateX(-50%)";  
+      //this.admintransform = "translateX(-50%)";  
       return;
     }
-    this.admintransform =`scale(${this._zoom}) translateX(-50%)`;
+    this.admintransform =`scale(${this._zoom})`;// translateX(-50%)`;
 
     
   }

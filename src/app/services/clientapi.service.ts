@@ -27,6 +27,13 @@ export class ClientapiService {
     return e;
   }
 
+  public GetEgo(){
+    const y = this.room?.seats?.filter(v=>v.you);
+    if (y?.length > 0){
+      return y[0];
+    }
+    return null;
+  }
   
   public async NewGame(name: string): Promise<New_Room_Resp |ClientError >{
     try{
@@ -43,6 +50,20 @@ export class ClientapiService {
       const e = await this.http.get<Room_Client>("/game/id/"+roomid+"/join/"+name, {responseType:'json'}).toPromise();
       this.room = e;
       this.OnRoomData.emit("join");
+
+      return e;
+    }catch(er){
+      const ret = this.toJsonError(er);
+      this.OnApiError.emit(ret);
+      return ret;
+    }
+  }
+
+  public async ShowCards(visible = true): Promise<Room_Client |ClientError>{
+    try{
+      const e = await this.http.get<Room_Client>("/game/id/"+this.room.id+"/reveal/"+visible, {responseType:'json'}).toPromise();
+      this.room = e;
+      this.OnRoomData.emit("reveal cards "+visible);
 
       return e;
     }catch(er){

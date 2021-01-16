@@ -1,9 +1,10 @@
 <ul *ngIf="visible == true">
-    <li>shift+g: grant admin rights</li>
-    <li>shift+r: revoke admin rights</li>
-    <li>shift+f: fold player</li>
-    <li>shift+k: kick player</li>
-    <li>numpad plus: get +10$</li>
-    <li>numpad minus: get -10$</li>
-    <li>shift +/-: change nxt bb</li>
+    <li><a [routerLink]="" (click)="grant()">grant admin (shift+g)</a></li>
+    <li><a [routerLink]="" (click)="revoke()">revoke admin (shift+r)</a></li>
+    <li><a [routerLink]="" (click)="fold()">fold (shift+f)</a></li>
+    <li><a [routerLink]="" (click)="kick()">kick (shift+k)</a></li>
+    <li><a [routerLink]="" (click)="plus()">$$$ (+)</a></li>
+    <li><a [routerLink]="" (click)="minus()">$$$ (-)</a></li>
+    <li><a [routerLink]="" (click)="bbplus()">BB+ (shift +)</a></li>
+    <li><a [routerLink]="" (click)="bbminus()">BB- (shift -)</a></li>
 </ul>

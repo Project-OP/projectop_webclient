@@ -1,11 +1,7 @@
-import { ThrowStmt } from '@angular/compiler';
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component,  Input, OnInit, QueryList,  ViewChildren } from '@angular/core';
 import { ClientapiService } from 'src/app/services/clientapi.service';
-import { PingpongService } from 'src/app/services/pingpong.service';
 import { Card_Client } from 'src/pots/client_data/Card_Client';
 import { Player_Client } from 'src/pots/client_data/Player_Client';
-import { Card } from 'src/pots/data/Card';
 import { CardComponent } from '../card/card.component';
 
 @Component({
@@ -49,6 +45,8 @@ export class SeatComponent implements OnInit {
   playerTurn = false;
   sitout = false;
   fold = false;
+  cardsvisible = false;
+
   sitoutfold="";
 
   nudge = false;
@@ -73,7 +71,7 @@ export class SeatComponent implements OnInit {
   set player(p: Player_Client){  
     this.sitout = (p.roundturn.sitout_next_turn || p.roundturn.sitout ) && !p.roundturn.join_next_round;
     this.fold = p.roundturn.fold;
-
+    this.cardsvisible = p.Cards?.filter(v=>v.visible).length > 0;
     if (this.fold){
       this.sitoutfold = "fold";
     }

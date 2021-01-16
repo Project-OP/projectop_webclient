@@ -38,6 +38,12 @@ export class UieventService {
     });
     
     this.SimpleEvent.subscribe((e)=>{
+      if (e == SimpleUIEvent.HIDE_CARDS){
+        this.api.ShowCards(false);
+      }
+      if (e == SimpleUIEvent.SHOW_CARDS){
+        this.api.ShowCards();
+      }
       if (e == SimpleUIEvent.NUDGE){
         this.api.NotifyTurn();
       }
@@ -257,6 +263,8 @@ export class UieventService {
 export class SimpleUIEvent{
   public static HIDE_SHORTCUTS = new SimpleUIEvent("HIDE_SHORTCUTS");
   public static SHOW_SHORTCUTS = new SimpleUIEvent("SHOW_SHORTCUTS");
+  public static HIDE_CARDS = new SimpleUIEvent("HIDE_CARDS");
+  public static SHOW_CARDS = new SimpleUIEvent("SHOW_CARDS");
 
   public static NUDGE = new SimpleUIEvent("NUDGE");
   public static TOGGLE_HOTKEYMENU = new SimpleUIEvent("TOGGLE_HOTKEYMENU");
@@ -272,9 +280,18 @@ export class SimpleUIEvent{
   public static ADMIN_PROMOTE = new SimpleUIEvent("APROMOTE");
   public static ADMIN_REVOKE = new SimpleUIEvent("AREVOKE");
 
-   constructor(private s: string){
+  constructor(private s: string, private payload = 0){
 
-   }
+  }
+
+  Payload(p: number): SimpleUIEvent{
+    this.payload = p;
+    return this;
+  }
+
+  get GetPayload(){
+    return this.payload;
+  }
 }
 export class TurnActionType{
   public static SUBMIT = new TurnActionType("SUBMIT");

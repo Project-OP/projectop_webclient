@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ClientapiService } from 'src/app/services/clientapi.service';
 import { SimpleUIEvent, TurnAction, UieventService } from 'src/app/services/uievent.service';
 
 @Component({
@@ -9,12 +10,24 @@ import { SimpleUIEvent, TurnAction, UieventService } from 'src/app/services/uiev
 export class MobileinputComponent implements OnInit {
 
   visible = false;
+  reveal_vis = false;
   sublbl = "";
   constructor(
-    private uiEvent: UieventService
+    private uiEvent: UieventService,
+    private api: ClientapiService
   ) { 
     uiEvent.TurnActionLabelChange.subscribe((s)=>{
       this.sublbl = s;
+    });
+
+    this.api.OnRoomData.subscribe((s: string)=>{
+      const reveal = this.api?.room?.table?.winner_pos?.length > 0 && this.api?.GetEgo()?.Cards?.filter(v=>v.visible).length == 0;
+      
+      if (reveal){
+        this.reveal_vis = true;
+      }else{
+        this.reveal_vis = false;
+      }
     });
   }
 
@@ -58,5 +71,9 @@ export class MobileinputComponent implements OnInit {
     this.uiEvent.SimpleEvent.next(SimpleUIEvent.TOGGLE_VIEWPORTSCALING);
 
   }
+  reveal(){
+    this.uiEvent.SimpleEvent.next(SimpleUIEvent.SHOW_CARDS);
+  }
+  
 
 }

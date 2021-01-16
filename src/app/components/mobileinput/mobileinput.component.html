@@ -13,6 +13,7 @@
     <li><button *ngIf="visible" class="ctrlbtn" (click)="fold()" id="fold">fold</button></li>
     <li><button *ngIf="visible" class="ctrlbtn" (click)="allin()" id="allin">all in</button></li>
     <li><button *ngIf="visible" class="ctrlbtn" (click)="nudge()" id="nudge">nudge</button></li>
+    <li><button *ngIf="visible && reveal_vis" class="ctrlbtn" (click)="reveal()" id="scaling">reveal</button></li>
     <li><button *ngIf="visible" class="ctrlbtn" (click)="scaling()" id="scaling">scaling</button></li>
     <li>
         <span class="checkbox">
