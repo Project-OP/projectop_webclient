@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit, resolveForwardRef, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, enableProdMode, Inject, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MsgdialogComponent } from 'src/app/components/msgdialog/msgdialog.component';
 import { ClientapiService } from 'src/app/services/clientapi.service';
@@ -41,7 +41,6 @@ export class LobbyComponent implements OnInit {
         private router: Router
   ) { 
 
-    
   }
 
   ngOnInit(){
