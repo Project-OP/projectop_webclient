@@ -105,9 +105,7 @@ export class PingpongService {
 
   public Connect(){
 
-    console.log("ORIGIN",);
-    const i = window.location.origin.includes("localhost");
-    console.log(i);
+    //const i = window.location.origin.includes("localhost");
     let wsp = "ws";
     if (window.location.protocol.includes("s")){
       wsp+="s";
