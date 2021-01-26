@@ -1,27 +1,37 @@
-# ProjectopAngularClient
+# Project-OP Client
+## Production use
+This is  the webclient for Project-OP (OP stands for online poker).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+To build this client for production use, you need Node-JS.
+The client must be built first, then the server.
 
-## Development server
+The build script (see angular.json) outputs the project into `../projectop_server/static`. Thus, the project structure must be as follows (Both projects must be located in  the same folder).
+```
+.
+|── projectop_server/
+|   |── static/
+|       |── (this is the compiled projectop_webclient location)
+|── projectop_webclient/
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To compile the webclient, use this command:
+```
+npm run build
+```
+If you encounter problems due to automatic version incrementation, try
+```
+npm run build-nv
+```
 
-## Code scaffolding
+Before this can work, remember to use 
+```
+npm install
+```
+to install all dependencies.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Testing
+To test the client, run
+```
+npm start
+```
